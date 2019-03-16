@@ -18,13 +18,12 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
+  tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
+      tintColor={tintColor}
       focused={focused}
       name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+        Platform.OS === 'ios' ? 'ios-home' : 'md-home'
       }
     />
   ),
@@ -36,10 +35,11 @@ const LinksStack = createStackNavigator({
 
 LinksStack.navigationOptions = {
   tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
+  tabBarIcon: ({ focused , tintColor}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      tintColor={tintColor}
+      name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
     />
   ),
 };
@@ -50,9 +50,10 @@ const SettingsStack = createStackNavigator({
 
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
+  tabBarIcon: ({ focused , tintColor}) => (
     <TabBarIcon
       focused={focused}
+      tintColor={tintColor}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
   ),
@@ -63,54 +64,3 @@ export default createBottomTabNavigator({
   LinksStack,
   SettingsStack,
 });
-
-// const AppTabNavigators = createTabNavigator({
-//   Home: {
-//     screen: HomeScreen,
-//     navigationOptions: {
-//       tabBarLabel: 'Home'
-//     }
-//   },
-//   Links: {
-//     screen: LinksScreen,
-//     navigation: {
-//       tabBarLabel: 'Links'
-//     }
-//   },
-//   Settings: {
-//     screen: SettingsScreen,
-//     navigationOptions: {
-//       tabBarLabel: 'Settings'
-//     }
-//   }
-// }, {
-//     tabBarPosition: 'bottom',
-//     tabBarOptions: {
-//       showIcon: false,
-//       style: {
-//         height: 45,
-//         backgroundColor: '#211305'
-//       },
-//       labelStyle: {
-//         fontSize: 12,//字体大小
-//         marginTop: -2,//字体距离图标大小
-//       },
-//     }
-//   })
-
-
-
-// export default  AppStackNavigator = createStackNavigator({
-//   Start: {  
-//     screen: StartScreen,
-//     navigationOptions: {
-//       header: null
-//     }
-//   },
-//   HomeTab: {
-//     screen: AppStackNavigator,
-//     navigationOptions: {
-//       header: null
-//     }
-//   }
-// })
