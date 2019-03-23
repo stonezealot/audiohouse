@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform ,View,Text } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -34,8 +34,8 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused , tintColor}) => (
+  tabBarLabel: 'Cart',
+  tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
       tintColor={tintColor}
@@ -49,12 +49,12 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused , tintColor}) => (
+  tabBarLabel: 'Myself',
+  tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
       tintColor={tintColor}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
     />
   ),
 };

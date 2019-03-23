@@ -28,21 +28,33 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setState({
-          swiperShow:true
+        swiperShow: true
       });
-  },0)
+    }, 0)
   }
 
   static navigationOptions = {
     header: null,
   };
 
+  renderScrollItem() {
+    var itemArr = [];
+    var colorArr = ['red', 'green'];
+    for (var i = 0; i < colorArr.length; i++) {
+      itemArr.push(
+        <View key={i} style={{ backgroundColor: colorArr[i], width: width / 2, height: 200 }}>
+          <Text>{i}</Text>
+        </View>
+      )
+    }
+
+    return itemArr;
+  }
 
 
   render() {
-    
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
@@ -53,31 +65,105 @@ export default class HomeScreen extends React.Component {
           <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
         </View>
         <ScrollView>
-            <Swiper containerStyle={styles.swiperContainer}
-              removeClippedSubviews={false}
-              showsButtons={true}
-              loop={true}
-              autoplay={true}
-              autoplayTimeout={2}>
-              <TouchableOpacity onPress={() => { alert('点击了第一张图') }}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { alert('点击了第二张图') }}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { alert('点击了第三张图') }}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { alert('点击了第三张图') }}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
-              <TouchableOpacity onPress={() => { alert('点击了第三张图') }}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
-            </Swiper>
+          <Swiper containerStyle={styles.swiperContainer}
+            removeClippedSubviews={false}
+            showsButtons={true}
+            loop={true}
+            autoplay={true}
+            autoplayTimeout={2}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
+          </Swiper>
           <View>
-            <Text style={styles.subtitle}>Time Sales</Text>
+            <ScrollView style={styles.scrollItemContainer} horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
+              <View>
+              <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon1.png')} />
+                  <Text>TV</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon2.png')} />
+                  <Text>Fridge</Text>
+                </TouchableOpacity>  
+              </View>
+              <View>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon3.png')} />
+                  <Text>Wine chiller</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon4.png')} />
+                  <Text>Washer</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon5.png')} />
+                  <Text>Dryer</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon6.png')} />
+                  <Text>Chest Freezer</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon7.png')} />
+                  <Text>Hob and hood</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon8.png')} />
+                  <Text>Kitchen appliances</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon9.png')} />
+                  <Text>Hifi</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon12.png')} />
+                  <Text>Aircon</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon11.png')} />
+                  <Text>Headphones</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.categoryButton}>
+                  <Image style={styles.categoryButton} source={require('../image/caticon10.png')} />
+                  <Text>Multi media speakers</Text>
+                </TouchableOpacity>
+              </View>
+
+            </ScrollView>
           </View>
         </ScrollView>
       </View>
     );
   }
 
+  // renderScrollItem(){
+  //       var itemArr=[];
+  //       var colorArr=['red','green'];
+  //       for(var i=0;i<colorArr.length;i++){
+  //         itemArr.push(
+  //           <View key={i} style={{backgroundColor:colorArr[i], width:{width}/2 ,height:200  }  }>
+  //           <Text>{i}</Text>
+  //           </View>
+  //         )
+  //       }
+  // }
+
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,  
+    flex: 1,
     backgroundColor: 'white',
     flexDirection: 'column'
   },
@@ -119,10 +205,24 @@ const styles = StyleSheet.create({
     height: 200,
     width: width,
   },
-  subtitle:{
-    fontSize:20,
-    marginTop:5,
-    textAlign:'center'
-
-  }
+  subtitle: {
+    fontSize: 20,
+    marginTop: 5,
+    textAlign: 'center'
+  },
+  scrollItemContainer: {
+    backgroundColor: 'white',
+    height: 200,
+    width: width,
+  },
+  categoryButton: {
+    resizeMode :'contain',
+    marginTop:20,
+    height: 50,
+    width: width / 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
 });

@@ -10,6 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import StartScreen from '../screens/StartScreen';
+import ItemScreen from '../screens/ItemScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 
@@ -20,6 +21,15 @@ export default createAppContainer(createSwitchNavigator({
     screen: StartScreen
   },
   Main: {
-    screen: MainTabNavigator
+    screen: MainTabNavigator,
+    // navigationOptions: {
+    //   drawerLockMode: 'locked-closed'
+    // }
   },
+  Item: {
+    screen: ItemScreen,
+    // navigationOptions:{
+    //   drawerLockMode:'locked-closed'
+    // }
+  }
 }));
