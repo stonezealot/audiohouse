@@ -9,7 +9,7 @@ import {
   View,
   Dimensions,
   Button,
-  PanResponder
+  PanResponder,
 } from 'react-native';
 
 
@@ -20,38 +20,7 @@ export default class ItemScreen extends React.Component {
     title: '详情',
   };
 
-  constructor(props) {
-    super(props);
-    this.onMoveShouldSetPanResponder = this.onMoveShouldSetPanResponder.bind(this);
-    this.onPanResponderGrant = this.onPanResponderGrant.bind(this);
-  }
-
-
-  onMoveShouldSetPanResponder(evt, gestureState) {
-    if (gestureState.dx > 30) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-
-  onPanResponderGrant(evt, gestureState) {
-    if (gestureState.x0 < 30) {
-      this.props.navigator.pop();
-    }
-  }
-
-
-  ComponentWillMount(evt, gestureState) {
-    this._panResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder,
-      onPanResponderGrant: this.onPanResponderGrant,
-    })
-  }
-
-
-  render(){
+  render() {
     return (
       <View style={styles.container}>
         <View>

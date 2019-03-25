@@ -80,14 +80,14 @@ export default class HomeScreen extends React.Component {
           <View>
             <ScrollView style={styles.scrollItemContainer} horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
               <View>
-              <TouchableOpacity style={styles.categoryButton}>
+                <TouchableOpacity style={styles.categoryButton}>
                   <Image style={styles.categoryButton} source={require('../image/caticon1.png')} />
                   <Text>TV</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.categoryButton}>
                   <Image style={styles.categoryButton} source={require('../image/caticon2.png')} />
                   <Text>Fridge</Text>
-                </TouchableOpacity>  
+                </TouchableOpacity>
               </View>
               <View>
                 <TouchableOpacity style={styles.categoryButton}>
@@ -139,32 +139,55 @@ export default class HomeScreen extends React.Component {
                   <Text>Multi media speakers</Text>
                 </TouchableOpacity>
               </View>
-
+            </ScrollView>
+          </View>
+          <View style={styles.subView}>
+            <Text style={styles.subtitle}>
+              BEST SELLING TV
+            </Text>
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.subScrollView} >
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+              <ScrollView containerStyle={styles.swiperContainer2}
+              loop={false}
+              horizontal='row'
+              showsHorizontalScrollIndicator='false'>
+              <View style={styles.subScrollView} >
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+              <View style={styles.subScrollView}>
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+              <View style={styles.subScrollView}>
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+              <View style={styles.subScrollView}>
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+              <View style={styles.subScrollView}>
+                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+              </View>
+            </ScrollView>
+              </View>
+            
+            <Text style={styles.subtitle}>
+              TV
+            </Text>
+            <ScrollView>
+              <Image></Image>
             </ScrollView>
           </View>
         </ScrollView>
       </View>
     );
   }
-
-  // renderScrollItem(){
-  //       var itemArr=[];
-  //       var colorArr=['red','green'];
-  //       for(var i=0;i<colorArr.length;i++){
-  //         itemArr.push(
-  //           <View key={i} style={{backgroundColor:colorArr[i], width:{width}/2 ,height:200  }  }>
-  //           <Text>{i}</Text>
-  //           </View>
-  //         )
-  //       }
-  // }
-
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#EEEEEE',
     flexDirection: 'column'
   },
   searchContainer: {
@@ -205,24 +228,52 @@ const styles = StyleSheet.create({
     height: 200,
     width: width,
   },
-  subtitle: {
-    fontSize: 20,
-    marginTop: 5,
-    textAlign: 'center'
-  },
   scrollItemContainer: {
     backgroundColor: 'white',
-    height: 200,
+    height: 180,
     width: width,
   },
   categoryButton: {
-    resizeMode :'contain',
-    marginTop:20,
+    resizeMode: 'contain',
+    marginTop: 10,
     height: 50,
     width: width / 3,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 5,
+    flex: 1
   },
+  subtitle: {
+    backgroundColor: 'white',
+    fontSize: 30,
+    width: width,
+    paddingTop: 20,
+    paddingBottom: 20,
+    textAlign: 'center',
+    fontFamily: 'Bitsumishi',
+  },
+  subView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  swiperContainer2: {
+    height: 350,
+    width: width / 2,
+  },
+  subScrollView: {
+    backgroundColor: 'white',
+    height: 350,
+    width: width / 2-16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    margin:8
+  },
+  swiperPic2: {
+    height: 330,
+    resizeMode: 'contain',
+    borderRadius:20,
+  },
+  
 });

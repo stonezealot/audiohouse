@@ -12,6 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
+
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
@@ -27,6 +28,9 @@ HomeStack.navigationOptions = {
       }
     />
   ),
+  activeTintColor:'#6b52ae', //活动选项卡的标签和图标颜色。
+  //          activeBackgroundColor:'#000',//活动选项卡的背景颜色
+              inactiveTintColor:'#333',//非活动选项卡的标签和图标颜色。
 };
 
 const LinksStack = createStackNavigator({
@@ -59,8 +63,11 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
 });
+
+

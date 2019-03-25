@@ -13,23 +13,53 @@ import StartScreen from '../screens/StartScreen';
 import ItemScreen from '../screens/ItemScreen'
 
 import MainTabNavigator from './MainTabNavigator';
+import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
 
-export default createAppContainer(createSwitchNavigator({
+export default createAppContainer(createStackNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
   Start: {
-    screen: StartScreen
+    screen: StartScreen,
+    navigationOptions: {
+      header: null
+    },
   },
   Main: {
     screen: MainTabNavigator,
-    // navigationOptions: {
-    //   drawerLockMode: 'locked-closed'
-    // }
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
+    },
+    transitionConfig: () => ({
+      transitionSpec: {
+          duration: 300,
+          easing: Easing.out(Easing.poly(4)),
+          timing: Animated.timing,
+      },
+      screenInterpolator: sceneProps => {
+          const { layout, position, scene } = sceneProps;
+          const { index } = scene;
+
+          const height = layout.initHeight;
+          //沿Y轴平移
+          const translateY = position.interpolate({
+              inputRange: [index - 1, index, index + 1],
+              outputRange: [height, 0, 0],
+          });
+          //透明度
+          const opacity = position.interpolate({
+              inputRange: [index - 1, index - 0.99, index],
+              outputRange: [0, 1, 1],
+          });
+          return { opacity, transform: [{ translateY }] };
+      },
+  }),
+
   },
   Item: {
     screen: ItemScreen,
-    // navigationOptions:{
-    //   drawerLockMode:'locked-closed'
-    // }
+    navigationOptions: {
+      header: null,
+    }
   }
 }));
