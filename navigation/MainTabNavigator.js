@@ -9,7 +9,7 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import CartScreen from '../screens/CartScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 
@@ -28,16 +28,13 @@ HomeStack.navigationOptions = {
       }
     />
   ),
-  activeTintColor:'#6b52ae', //活动选项卡的标签和图标颜色。
-  //          activeBackgroundColor:'#000',//活动选项卡的背景颜色
-              inactiveTintColor:'#333',//非活动选项卡的标签和图标颜色。
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const CartStack = createStackNavigator({
+  Cart: CartScreen,
 });
 
-LinksStack.navigationOptions = {
+CartStack.navigationOptions = {
   tabBarLabel: 'Cart',
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
@@ -66,7 +63,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  CartStack,
   SettingsStack,
 });
 

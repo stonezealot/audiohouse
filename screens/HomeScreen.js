@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   View,
   TextInput,
-  Dimensions
+  Dimensions,
+  RefreshControl
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { cal } from '../components/common'
@@ -21,10 +22,20 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      content: '空白',
-      url: ''
+      refreshing: false,
     };
+  }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    // fetchData().then(() => {
+    //   this.setState({refreshing: false});
+    // });
+    setTimeout(() => {
+      this.setState({
+        refreshing: false
+      });
+    }, 1000)
   }
 
   componentDidMount() {
@@ -52,9 +63,8 @@ export default class HomeScreen extends React.Component {
 
     return itemArr;
   }
-
-
   render() {
+
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
@@ -64,18 +74,24 @@ export default class HomeScreen extends React.Component {
           ></TextInput>
           <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
         </View>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }>
           <Swiper containerStyle={styles.swiperContainer}
             removeClippedSubviews={false}
             showsButtons={true}
             loop={true}
             autoplay={true}
             autoplayTimeout={2}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Item')}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
           </Swiper>
           <View>
             <ScrollView style={styles.scrollItemContainer} horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
@@ -145,35 +161,59 @@ export default class HomeScreen extends React.Component {
             <Text style={styles.subtitle}>
               BEST SELLING TV
             </Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={styles.subScrollView} >
                 <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
               </View>
               <ScrollView containerStyle={styles.swiperContainer2}
-              loop={false}
-              horizontal='row'
-              showsHorizontalScrollIndicator='false'>
-              <View style={styles.subScrollView} >
-                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
-              </View>
-              <View style={styles.subScrollView}>
-                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
-              </View>
-              <View style={styles.subScrollView}>
-                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
-              </View>
-              <View style={styles.subScrollView}>
-                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
-              </View>
-              <View style={styles.subScrollView}>
-                <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
-              </View>
-            </ScrollView>
-              </View>
-            
+                loop={false}
+                horizontal='row'
+                showsHorizontalScrollIndicator='false'>
+                <View style={styles.subScrollView} >
+                  <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingTV.jpg')} />
+                </View>
+              </ScrollView>
+            </View>
             <Text style={styles.subtitle}>
-              TV
+              BEST SELLING FRIDGE
             </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={styles.subScrollView} >
+                <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+              </View>
+              <ScrollView containerStyle={styles.swiperContainer2}
+                loop={false}
+                horizontal='row'
+                showsHorizontalScrollIndicator='false'>
+                <View style={styles.subScrollView} >
+                  <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+                </View>
+                <View style={styles.subScrollView}>
+                  <Image style={styles.swiperPic2} source={require('../image/sellingFridge.jpg')} />
+                </View>
+              </ScrollView>
+            </View>
             <ScrollView>
               <Image></Image>
             </ScrollView>
@@ -264,16 +304,16 @@ const styles = StyleSheet.create({
   subScrollView: {
     backgroundColor: 'white',
     height: 350,
-    width: width / 2-16,
+    width: width / 2 - 16,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    margin:8
+    margin: 8
   },
   swiperPic2: {
     height: 330,
     resizeMode: 'contain',
-    borderRadius:20,
+    borderRadius: 20,
   },
-  
+
 });

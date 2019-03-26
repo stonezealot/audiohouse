@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 
-export default class LinksScreen extends React.Component {
+export default class CartScreen extends React.Component {
 
   constructor(props) {
     super(props);
@@ -11,7 +11,7 @@ export default class LinksScreen extends React.Component {
     navigation = this.props.navigation;
   }
   static navigationOptions = {
-    title: 'Links',
+    title: 'Cart',
   };
 
   render() {
