@@ -11,6 +11,7 @@ import {
   Modal,
   FlatList
 } from 'react-native';
+import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from "react-native-scrollable-tab-view"
 
 
 var { height, width } = Dimensions.get('window');
@@ -20,18 +21,15 @@ export default class ProductScreen extends React.Component {
     title: '详情',
   };
 
-  constructor(){
-    super();
-    this.state={
-      list:['Overview','Specifications','Terms&Conditions'],
-      content:[
-        {item:'内容一'},
-        {item:'内容二'},
-        {item:'内容三'}
-      ],
-      current:0
+  constructor(props) {
+    super(props);
+    this.state = {
+        number: 0,
+        heightValue: new Animated.Value(0),
+        widthValue: new Animated.Value(0),  
+        springValue: new Animated.Value(0),
     }
-  }
+}
 
   render() {
     return (
@@ -75,12 +73,30 @@ export default class ProductScreen extends React.Component {
             <Text style={styles.cartEmphasiseCash}>Cashback</Text>
           </View>
           <View style={styles.detailsView}>
+            <ScrollableTabView
+              renderTabBar={() => <DefaultTabBar />}
+              tabBarUnderlineStyle={styles.tabBarUnderline}
+              tabBarTextStyle={styles.tabBarText}
+              tabBarBackgroundColor='white'
+              tabBarActiveTextColor='#EE113D'
+              tabBarInactiveTextColor='#333'
+              initialPage={1}
+              locked={true}
+            >            
+             <View tabLabel='Specifications'>
+                <Image style={styles.overview} source={require('../image/specifications.jpg')} />
+              </View>
+              <View tabLabel='Overview'>
+                <Image style={styles.overview} source={require('../image/overview.jpg')} />
+              </View>
+              <Text tabLabel='Terms&Conditions'>Terms&Conditions</Text >
+            </ScrollableTabView>
 
 
           </View>
         </ScrollView>
         <View style={styles.bottomBtnContainer}>
-          <View style={{ flex: 1, flexDirection:'row'}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <TouchableOpacity>
               {'1' === '1' ? <Image style={styles.bottomLeftBtn} source={require('../image/bookmark.png')} /> :
                 <Image style={styles.bottomLeftBtn} source={require('../image/bookmarked.png')} />}
@@ -93,7 +109,7 @@ export default class ProductScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity  activeOpacity={0.8}>
+            <TouchableOpacity activeOpacity={0.8}>
               <View style={styles.addToCartBtn}>
                 <Text style={styles.addToCartBtnText}>Add to Cart</Text>
               </View>
@@ -198,10 +214,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: ('bold', '500'),
   },
-  detailsView:{
-      backgroundColor:'white',
-      marginTop:5,
-      height:1000
+  detailsView: {
+    backgroundColor: 'white',
+    marginTop: 10,
+    // height: 1000
+  },
+  tabBarUnderline: {
+    backgroundColor: '#EE113D',
+    height: 2,
+  },
+  tabBarText: {
+    fontSize: 15,
+    fontWeight: ('bold', '300'),
+  },
+  overview: {
+    width:width,
+    // height:400,
+    resizeMode: 'stretch',
   },
   bottomBtnContainer: {
     backgroundColor: 'white',
@@ -226,9 +255,9 @@ const styles = StyleSheet.create({
   bottomLeftBtn: {
     height: 30,
     width: 30,
-    marginTop:10,
-    marginLeft:17,
-    marginRight:17
+    marginTop: 10,
+    marginLeft: 17,
+    marginRight: 17
 
   }
 })
