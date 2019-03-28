@@ -11,6 +11,7 @@ import CartScreen from '../screens/CartScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import StartScreen from '../screens/StartScreen';
 import ProductScreen from '../screens/ProductScreen'
+import SearchScreen from '../screens/SearchScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -37,4 +38,10 @@ export default createAppContainer(createStackNavigator({
       header: null,
     }
   },
+  Search:{
+    screen: SearchScreen,
+    navigationOptions:{
+      header:null,
+    }
+  }
 }));

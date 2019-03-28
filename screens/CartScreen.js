@@ -1,12 +1,22 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import { Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  Modal,
+  FlatList} from 'react-native';
+
+var { height, width } = Dimensions.get('window');
 
 export default class CartScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
     };
     navigation = this.props.navigation;
   }
@@ -16,11 +26,13 @@ export default class CartScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
-      </ScrollView>
+      <View style={styles.container}>
+        <ScrollView style={styles.container}>
+        </ScrollView>
+        <View style={styles.bottomBtnContainer}>
+
+        </View>
+      </View>
     );
   }
 }
@@ -29,6 +41,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#EEEEEE',
+  },
+  bottomBtnContainer: {
+    backgroundColor: 'white',
+    height: 50,
+    width: width,
+    flexDirection: 'row'
   },
 });

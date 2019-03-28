@@ -9,11 +9,12 @@ import {
   View,
   TextInput,
   Dimensions,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { cal } from '../components/common'
 import Swiper from 'react-native-swiper'
+import URLSearchParams from 'url-search-params';
 
 var { height, width } = Dimensions.get('window');
 
@@ -21,8 +22,13 @@ export default class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.search = this.search.bind(this);
+    navigation = this.props.navigation;
     this.state = {
       refreshing: false,
+      serviceEntry: 'localhost:8080',
+      searchText: '',
+      selectedShopMenus:''
     };
   }
 
@@ -50,27 +56,49 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
-  renderScrollItem() {
-    var itemArr = [];
-    var colorArr = ['red', 'green'];
-    for (var i = 0; i < colorArr.length; i++) {
-      itemArr.push(
-        <View key={i} style={{ backgroundColor: colorArr[i], width: width / 2, height: 200 }}>
-          <Text>{i}</Text>
-        </View>
-      )
-    }
+  // renderScrollItem() {
+  //   var itemArr = [];
+  //   var colorArr = ['red', 'green'];
+  //   for (var i = 0; i < colorArr.length; i++) {
+  //     itemArr.push(
+  //       <View key={i} style={{ backgroundColor: colorArr[i], width: width / 2, height: 200 }}>
+  //         <Text>{i}</Text>
+  //       </View>
+  //     )
+  //   }
 
-    return itemArr;
+  //   return itemArr;
+  // }
+
+
+  search(inputData) {
+    this.setState({ searchText: inputData },() =>{
+      // alert(this.state.searchText);
+      console.log('search');
+      navigation.navigate('Search', { searchText: this.state.searchText })
+      // navigation.navigate('Search',{state:this.state})
+    });
+ 
+    
+    // let url = 'http://192.168.1.74:8080/' + 'api/stocks';
+    // const params = new URLSearchParams();
+    // params.append('orgId', 'A01');
+    // url += ('?' + params);
+    // fetch(url,{
+    //   method:'GET',
+    // })
+    // .then(response => response.json())
+    // .then(response => alert(response));
   }
-  render() {
 
+
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchContainer}>
           <TextInput placeholder="Search"
             style={styles.searchInput}
-            onSubmitEditing={() => { alert('去搜索') }}
+            onSubmitEditing={(inputData) => this.search(inputData.nativeEvent.text)}
           ></TextInput>
           <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
         </View>
