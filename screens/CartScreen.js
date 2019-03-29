@@ -30,7 +30,6 @@ export default class CartScreen extends React.Component {
         <ScrollView style={styles.container}>
         </ScrollView>
         <View style={styles.bottomBtnContainer}>
-
         </View>
       </View>
     );

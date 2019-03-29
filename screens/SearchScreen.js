@@ -84,7 +84,6 @@ export default class SearchScreen extends React.Component {
                     <TextInput placeholder="Search"
                         style={styles.searchInput}
                         onSubmitEditing={(inputData) => this._onChangeText(inputData.nativeEvent.text)}
-                    // value={this.state.searchText}
                     ></TextInput>
                     <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
                 </View>

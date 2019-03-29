@@ -28,7 +28,7 @@ export default class HomeScreen extends React.Component {
       refreshing: false,
       serviceEntry: 'localhost:8080',
       searchText: '',
-      selectedShopMenus:''
+      selectedShopMenus: ''
     };
   }
 
@@ -49,46 +49,43 @@ export default class HomeScreen extends React.Component {
       this.setState({
         swiperShow: true
       });
-    }, 0)
+    }, 0);
+
+    // let url = 'http://192.168.1.74:8080/' + 'api/stocks';
+    // const params = new URLSearchParams();
+    // params.append('orgId', 'A01');
+    // url += ('?' + params);
+    // fetch(url, {
+    //     method: 'GET',
+    // })
+    //     .then(response => response.json())
+    //     .then(response => {
+    //         this.setState({
+    //             selectedShopMenus: response,
+    //         }, () => {
+    //             this.setState({
+    //                 selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
+    //                     return menu.stkId.toUpperCase().includes(searchText) || menu.name.toUpperCase().includes(searchText);
+    //                 })
+    //             })
+    //         }
+    //         );
+    //     });
+    
   }
 
   static navigationOptions = {
     header: null,
   };
 
-  // renderScrollItem() {
-  //   var itemArr = [];
-  //   var colorArr = ['red', 'green'];
-  //   for (var i = 0; i < colorArr.length; i++) {
-  //     itemArr.push(
-  //       <View key={i} style={{ backgroundColor: colorArr[i], width: width / 2, height: 200 }}>
-  //         <Text>{i}</Text>
-  //       </View>
-  //     )
-  //   }
-
-  //   return itemArr;
-  // }
-
-
   search(inputData) {
-    this.setState({ searchText: inputData },() =>{
+    this.setState({ searchText: inputData }, () => {
       // alert(this.state.searchText);
       console.log('search');
       navigation.navigate('Search', { searchText: this.state.searchText })
+      navigation.navigate('Search',{selectedShopMenus: this.state.selectedShopMenus})
       // navigation.navigate('Search',{state:this.state})
     });
- 
-    
-    // let url = 'http://192.168.1.74:8080/' + 'api/stocks';
-    // const params = new URLSearchParams();
-    // params.append('orgId', 'A01');
-    // url += ('?' + params);
-    // fetch(url,{
-    //   method:'GET',
-    // })
-    // .then(response => response.json())
-    // .then(response => alert(response));
   }
 
 
