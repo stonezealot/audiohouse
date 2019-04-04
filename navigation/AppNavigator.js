@@ -38,10 +38,10 @@ export default createAppContainer(createStackNavigator({
       header: null,
     }
   },
-  Search:{
+  Search: {
     screen: SearchScreen,
-    navigationOptions:{
-      header:null,
+    navigationOptions: {
+      header: null,
     }
   }
 }));

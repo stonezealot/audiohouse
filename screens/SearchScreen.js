@@ -14,9 +14,9 @@ var { height, width } = Dimensions.get('window');
 
 export default class SearchScreen extends React.Component {
 
-    _extraUniqueKey(item, index) {
-        return "index" + index + item;
-    }
+    static navigationOptions = {
+        header: null,
+    };
 
     constructor(props) {
         super(props);
@@ -27,6 +27,7 @@ export default class SearchScreen extends React.Component {
             selectedShopMenus: this.props.navigation.getParam("selectedShopMenus"),
             selectedShopMenusUpdate: ''
         }
+        navigation = this.props.navigation;
     }
 
     componentDidMount() {
@@ -38,44 +39,9 @@ export default class SearchScreen extends React.Component {
 
     }
 
-    handleProductMenu(item) {
-        let netPriceString = item.netPrice.toString();
-        let decimalIndex = netPriceString.indexOf('.');
-        let length = netPriceString.length;
-        let cent = length - decimalIndex;
-        if (length - decimalIndex == 2) {
-            cent = netPriceString.substring(decimalIndex + 1, length).concat('0');
-        } else {
-            cent = netPriceString.substring(decimalIndex + 1, length)
-        }
-        return (
-            <TouchableOpacity
-                key={item.stkId}
-                activeOpacity={0.8}
-                onpress={()=>{this.toProduct}}
-            >
-                <View style={styles.productItemContainer}>
-                    <Image style={styles.productImage} />
-                    <View>
-                        <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
-                        <Text style={styles.productListPrice}>U.P.$ {item.listPrice}</Text>
-                        <Text style={styles.productPriceLabel}>{item.priceLabel}</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.productNetPriceDollar}>${decimalIndex == -1 ? netPriceString : netPriceString.substring(0, decimalIndex)}</Text>
-                            <Text style={styles.productNetPriceCent}>{decimalIndex == -1 ? '00' : cent}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.deliveryText}>{item.priceDiff}</Text>
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
     onChangeText(inputData) {
         this.setState({ searchText: inputData }, () => {
-            const { selectedShopMenus, searchText } = this.state;
+            const { searchText } = this.state;
             this.setState({
                 selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
                     return menu.stkId.toUpperCase().includes(searchText) || menu.name.toUpperCase().includes(searchText);
@@ -84,8 +50,63 @@ export default class SearchScreen extends React.Component {
         });
     }
 
-    toProduct(){
+    toProduct() {
+        navigation.navigate('Product');
+    }
 
+    _extraUniqueKey(item, index) {
+        return "index" + index + item;
+    }
+
+    handleProductMenu(item) {
+        let netPriceString = item.netPrice.toString();
+        let decimalIndex1 = netPriceString.indexOf('.');
+        let length = netPriceString.length;
+        let cent = length - decimalIndex1;
+        if (length - decimalIndex1 == 2) {
+            cent = netPriceString.substring(decimalIndex1 + 1, length).concat('0');
+        } else {
+            cent = netPriceString.substring(decimalIndex1 + 1, length)
+        }
+        let discPriceString = (item.netPrice - item.refPrice1).toString();
+        let decimalIndex2 = discPriceString.indexOf('.');
+        // if (item.netPrice - item.refPrice1 == 0) {
+        //     discPriceString = ''
+        // }
+
+        if(decimalIndex2 == -1 && (item.netPrice - item.refPrice1 == 0)){
+            discPriceString = ''
+        }else if(decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2+2) != '0'){
+            discPriceString = discPriceString.substring(0, decimalIndex2 + 3)
+        }else if(decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2+2) == '0'){
+            discPriceString = discPriceString.substring(0, decimalIndex2 + 2)
+        }
+
+
+
+        return (
+            <TouchableOpacity
+                key={item.stkId}
+                activeOpacity={0.3}
+                onPress={() => this.toProduct()}
+            >
+                <View style={styles.productItemContainer}>
+                    <Image style={styles.productImage} />
+                    <View>
+                        <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
+                        <Text style={styles.productListPrice}>U.P.$ {item.listPrice}</Text>
+                        <Text style={styles.productPriceLabel}>{item.priceLabel}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.productNetPriceDollar}>${decimalIndex1 == -1 ? netPriceString : netPriceString.substring(0, decimalIndex1)}</Text>
+                            <Text style={styles.productNetPriceCent}>{decimalIndex1 == -1 ? '00' : cent}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.deliveryText}>{discPriceString}</Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
     render() {

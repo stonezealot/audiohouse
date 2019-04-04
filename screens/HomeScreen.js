@@ -20,6 +20,10 @@ var { height, width } = Dimensions.get('window');
 
 export default class HomeScreen extends React.Component {
 
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(props) {
     super(props);
     this.search = this.search.bind(this);
@@ -68,17 +72,10 @@ export default class HomeScreen extends React.Component {
 
   }
 
-  static navigationOptions = {
-    header: null,
-  };
-
   search(inputData) {
     this.setState({ searchText: inputData }, () => {
-      // alert(this.state.searchText);
-      console.log('search');
       navigation.navigate('Search', { searchText: this.state.searchText })
       navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
-      // navigation.navigate('Search',{state:this.state})
     });
   }
 

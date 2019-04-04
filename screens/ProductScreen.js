@@ -21,16 +21,6 @@ export default class ProductScreen extends React.Component {
     title: '详情',
   };
 
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//         number: 0,
-//         heightValue: new Animated.Value(0),
-//         widthValue: new Animated.Value(0),  
-//         springValue: new Animated.Value(0),
-//     }
-// }
-
   render() {
     return (
       <View style={styles.container}>
