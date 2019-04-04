@@ -5,6 +5,7 @@ import {
     View, Dimensions, Modal,
     FlatList, TextInput
 } from 'react-native';
+import StringDistinction from 'react-native-string-distinction';
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from "react-native-scrollable-tab-view"
 import URLSearchParams from 'url-search-params';
 
@@ -19,53 +20,60 @@ export default class SearchScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this._onChangeText = this._onChangeText.bind(this);
+        this.onChangeText = this.onChangeText.bind(this);
+        this.toProduct = this.toProduct.bind(this);
         this.state = {
             searchText: this.props.navigation.getParam("searchText"),
-            selectedShopMenus: '',
+            selectedShopMenus: this.props.navigation.getParam("selectedShopMenus"),
             selectedShopMenusUpdate: ''
         }
     }
 
     componentDidMount() {
-        const { selectedShopMenus, searchText } = this.state;
-        let url = 'http://192.168.1.74:8080/' + 'api/stocks';
-        const params = new URLSearchParams();
-        params.append('orgId', 'A01');
-        url += ('?' + params);
-        fetch(url, {
-            method: 'GET',
+        this.setState({
+            selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
+                return menu.stkId.toUpperCase().includes(this.state.searchText) || menu.name.toUpperCase().includes(this.state.searchText);
+            })
         })
-            .then(response => response.json())
-            .then(response => {
-                this.setState({
-                    selectedShopMenus: response,
-                }, () => {
-                    this.setState({
-                        selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
-                            return menu.stkId.toUpperCase().includes(searchText) || menu.name.toUpperCase().includes(searchText);
-                        })
-                    })
-                }
-                );
-            });
+
     }
 
     handleProductMenu(item) {
+        let netPriceString = item.netPrice.toString();
+        let decimalIndex = netPriceString.indexOf('.');
+        let length = netPriceString.length;
+        let cent = length - decimalIndex;
+        if (length - decimalIndex == 2) {
+            cent = netPriceString.substring(decimalIndex + 1, length).concat('0');
+        } else {
+            cent = netPriceString.substring(decimalIndex + 1, length)
+        }
         return (
             <TouchableOpacity
                 key={item.stkId}
-                style={{ height: 100, width: width }}
+                activeOpacity={0.8}
+                onpress={()=>{this.toProduct}}
             >
-                <View style={{ height: 100, width: width, backgroundColor: 'powderblue' }}>
-                    <Text>{item.stkId}</Text>
-                    <Text>{item.name}</Text>
+                <View style={styles.productItemContainer}>
+                    <Image style={styles.productImage} />
+                    <View>
+                        <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
+                        <Text style={styles.productListPrice}>U.P.$ {item.listPrice}</Text>
+                        <Text style={styles.productPriceLabel}>{item.priceLabel}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.productNetPriceDollar}>${decimalIndex == -1 ? netPriceString : netPriceString.substring(0, decimalIndex)}</Text>
+                            <Text style={styles.productNetPriceCent}>{decimalIndex == -1 ? '00' : cent}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.deliveryText}>{item.priceDiff}</Text>
+                        </View>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
     }
 
-    _onChangeText(inputData) {
+    onChangeText(inputData) {
         this.setState({ searchText: inputData }, () => {
             const { selectedShopMenus, searchText } = this.state;
             this.setState({
@@ -76,6 +84,9 @@ export default class SearchScreen extends React.Component {
         });
     }
 
+    toProduct(){
+
+    }
 
     render() {
         return (
@@ -83,7 +94,7 @@ export default class SearchScreen extends React.Component {
                 <View style={styles.searchContainer}>
                     <TextInput placeholder="Search"
                         style={styles.searchInput}
-                        onSubmitEditing={(inputData) => this._onChangeText(inputData.nativeEvent.text)}
+                        onSubmitEditing={(inputData) => this.onChangeText(inputData.nativeEvent.text.toUpperCase())}
                     ></TextInput>
                     <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
                 </View>
@@ -127,4 +138,64 @@ const styles = StyleSheet.create({
         top: 29,
         left: 55
     },
+    productItemContainer: {
+        height: 150,
+        width: width,
+        margin: 0.5,
+        backgroundColor: 'white',
+        flexDirection: 'row'
+    },
+    productImage: {
+        height: 150,
+        width: 150,
+        backgroundColor: 'powderblue'
+    },
+    productName: {
+        width: width - 150,
+        height: 40,
+        fontSize: 15,
+        fontWeight: ('bold', '500'),
+        backgroundColor: 'white',
+    },
+    productPriceLabel: {
+        backgroundColor: 'pink',
+        color: 'red',
+        backgroundColor: 'white',
+        fontSize: 10,
+        fontWeight: ('bold', '800'),
+        left: 3,
+        marginTop: 5,
+        alignItems: 'center'
+    },
+    productListPrice: {
+        color: 'gray',
+        textDecorationLine: 'line-through',
+        backgroundColor: 'white',
+        fontSize: 14,
+        fontWeight: ('bold', '200'),
+        marginTop: 5
+    },
+    productNetPriceDollar: {
+        color: 'red',
+        fontSize: 25,
+        fontWeight: ('bold', '600'),
+        backgroundColor: 'white',
+        marginTop: 2
+    },
+    productNetPriceCent: {
+        color: 'red',
+        fontSize: 9,
+        fontWeight: ('bold', '600'),
+        backgroundColor: 'white',
+        marginTop: 12,
+        textDecorationLine: 'underline'
+    },
+    deliveryText: {
+        color: '#8a8a8a',
+        backgroundColor: 'white',
+        fontSize: 15,
+        fontWeight: ('bold', '400'),
+        paddingLeft: 5,
+        marginRight: 10
+    }
 })

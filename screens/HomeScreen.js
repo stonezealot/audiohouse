@@ -51,27 +51,21 @@ export default class HomeScreen extends React.Component {
       });
     }, 0);
 
-    // let url = 'http://192.168.1.74:8080/' + 'api/stocks';
-    // const params = new URLSearchParams();
-    // params.append('orgId', 'A01');
-    // url += ('?' + params);
-    // fetch(url, {
-    //     method: 'GET',
-    // })
-    //     .then(response => response.json())
-    //     .then(response => {
-    //         this.setState({
-    //             selectedShopMenus: response,
-    //         }, () => {
-    //             this.setState({
-    //                 selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
-    //                     return menu.stkId.toUpperCase().includes(searchText) || menu.name.toUpperCase().includes(searchText);
-    //                 })
-    //             })
-    //         }
-    //         );
-    //     });
-    
+    let url = 'http://172.20.10.9:8080/' + 'api/stocks';
+    const params = new URLSearchParams();
+    params.append('orgId', 'A01');
+    url += ('?' + params);
+    fetch(url, {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          selectedShopMenus: response,
+        }
+        );
+      });
+
   }
 
   static navigationOptions = {
@@ -83,7 +77,7 @@ export default class HomeScreen extends React.Component {
       // alert(this.state.searchText);
       console.log('search');
       navigation.navigate('Search', { searchText: this.state.searchText })
-      navigation.navigate('Search',{selectedShopMenus: this.state.selectedShopMenus})
+      navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
       // navigation.navigate('Search',{state:this.state})
     });
   }
@@ -95,7 +89,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.searchContainer}>
           <TextInput placeholder="Search"
             style={styles.searchInput}
-            onSubmitEditing={(inputData) => this.search(inputData.nativeEvent.text)}
+            onSubmitEditing={(inputData) => this.search(inputData.nativeEvent.text.toUpperCase())}
           ></TextInput>
           <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>
         </View>

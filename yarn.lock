@@ -5884,6 +5884,11 @@ react-native-scrollable-tab-view@^0.10.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-string-distinction@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-string-distinction/-/react-native-string-distinction-1.0.3.tgz#cf0914c8ebe302d1d87a23b7619fa058a94fc72c"
+  integrity sha512-vUdqSn/kkngHAMAhWBCS50puCBoTvVxYebHIJjMf52jxk84FX4n9ZYeKMehR2pudXR7YzihepVHqI8KZtWYOug==
+
 react-native-svg@8.0.10:
   version "8.0.10"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-8.0.10.tgz#b07e2342d1486220f5fda1a584e316e7d2d1f392"
