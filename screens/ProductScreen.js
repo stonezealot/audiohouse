@@ -12,16 +12,50 @@ import {
   FlatList
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from "react-native-scrollable-tab-view"
+import SelectDialog from 'react-native-select-dialog';
 
 
 var { height, width } = Dimensions.get('window');
 
 export default class ProductScreen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedProduct: this.props.navigation.getParam("selectedProduct"),
+    }
+  }
+
   static navigationOptions = {
     title: '详情',
   };
 
   render() {
+
+    const { selectedProduct } = this.state;
+
+    //handle netPrice
+    let netPriceString = selectedProduct.netPrice.toString();
+    let decimalIndex1 = netPriceString.indexOf('.');
+    let length = netPriceString.length;
+    let cent = length - decimalIndex1;
+    if (length - decimalIndex1 == 2) {
+      cent = netPriceString.substring(decimalIndex1 + 1, length).concat('0');
+    } else {
+      cent = netPriceString.substring(decimalIndex1 + 1, length)
+    }
+
+    //handle discPrice
+    let discPriceString = ('$').concat((selectedProduct.netPrice - selectedProduct.refPrice1).toString());
+    let decimalIndex2 = discPriceString.indexOf('.');
+    if (decimalIndex2 == -1 && (selectedProduct.netPrice - selectedProduct.refPrice1 == 0)) {
+      discPriceString = null
+    } else if (decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2 + 2) != '0') {
+      discPriceString = discPriceString.substring(0, decimalIndex2 + 3)
+    } else if (decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2 + 2) == '0') {
+      discPriceString = discPriceString.substring(0, decimalIndex2 + 2)
+    }
+
     return (
       <View style={styles.container}>
         <ScrollView style={{ height: height - 50 }} >
@@ -32,31 +66,29 @@ export default class ProductScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.priceContainer}>
-            <Text style={styles.productSummaryPriceDollar}>$230</Text>
-            <Text style={styles.productSummaryPriceCent}>00</Text>
+            <Text style={styles.productSummaryPriceDollar}>${decimalIndex1 == -1 ? netPriceString : netPriceString.substring(0, decimalIndex1)}</Text>
+            <Text style={styles.productSummaryPriceCent}>{decimalIndex1 == -1 ? '00' : cent}</Text>
           </View>
-          <View>
-            <Text style={styles.productSummaryPriceUsual}>U.P. $400</Text>
+          <View style={{ flexDirection: 'row', width: width, backgroundColor: 'white' }}>
+            <Text style={styles.productSummaryPriceUsual}>U.P. {this.state.selectedProduct.listPrice}</Text>
           </View>
           <View>
             <Text style={styles.productSummaryName}>
-              SAMSUNG UA-55NU7100KXXS{"\n"}
-              55" UHD 4K SMART LED TV{"\n"}
-              3 YEARS WARRANTY BY SAMSUNG
+              {this.state.selectedProduct.name}
             </Text>
           </View>
           <View style={styles.middleChoice}>
             <Image style={styles.largeShippingIcon} source={require('../image/local_shipping.png')} />
             <Text style={styles.deliveryText}>Delivery</Text>
             <TouchableOpacity>
-              <Text style={styles.dropdownSelection}>Stardard Delivery($40)</Text>
+              <Text style={styles.dropdownSelection}>Stardard Delivery({selectedProduct.ref8})</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.middleChoice}>
             <Image style={styles.largeShippingIcon} source={require('../image/users.png')} />
-            <Text style={styles.deliveryText}>Members' Special</Text>
-            <Text style={styles.cartEmphasiseCash}>{'1' === '1' ? 'Free' : null}</Text>
-            <Text style={styles.voucherMentionFocus}>{'1' === '1' ? '$' + '89' : null}</Text>
+            <Text style={styles.membersSpecialText}>Members' Special:</Text>
+            <Text style={styles.cartEmphasiseCash}>{discPriceString == null ? null : 'Free'}</Text>
+            <Text style={styles.voucherMentionFocus}>{discPriceString}</Text>
             <Text style={styles.cartEmphasiseCash}>{'1' === '1' ? '+' : null}</Text>
             <Text style={styles.cartEmphasiseCash}>Extra</Text>
             <Text style={styles.voucherMentionFocus}>$50</Text>
@@ -72,8 +104,8 @@ export default class ProductScreen extends React.Component {
               tabBarInactiveTextColor='#333'
               initialPage={1}
               locked={true}
-            >            
-             <View tabLabel='Specifications'>
+            >
+              <View tabLabel='Specifications'>
                 <Image style={styles.overview} source={require('../image/specifications.jpg')} />
               </View>
               <View tabLabel='Overview'>
@@ -187,6 +219,14 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     marginRight: 10
   },
+  membersSpecialText: {
+    color: '#8a8a8a',
+    backgroundColor: 'white',
+    fontSize: 15,
+    fontWeight: ('bold', '400'),
+    paddingLeft: 5,
+    marginRight: 10
+  },
   dropdownSelection: {
     backgroundColor: 'white',
     fontSize: 15,
@@ -218,7 +258,7 @@ const styles = StyleSheet.create({
     fontWeight: ('bold', '300'),
   },
   overview: {
-    width:width,
+    width: width,
     // height:400,
     resizeMode: 'stretch',
   },

@@ -5884,6 +5884,11 @@ react-native-scrollable-tab-view@^0.10.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-select-dialog@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-select-dialog/-/react-native-select-dialog-1.2.0.tgz#c8564374c8429ac6ccf1228de2c7c93678324083"
+  integrity sha1-yFZDdMhCmsbM8SKN4sfJNngyQIM=
+
 react-native-string-distinction@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-string-distinction/-/react-native-string-distinction-1.0.3.tgz#cf0914c8ebe302d1d87a23b7619fa058a94fc72c"

@@ -25,7 +25,8 @@ export default class SearchScreen extends React.Component {
         this.state = {
             searchText: this.props.navigation.getParam("searchText"),
             selectedShopMenus: this.props.navigation.getParam("selectedShopMenus"),
-            selectedShopMenusUpdate: ''
+            selectedShopMenusUpdate: '',
+            selectedProduct: ''
         }
         navigation = this.props.navigation;
     }
@@ -50,8 +51,20 @@ export default class SearchScreen extends React.Component {
         });
     }
 
-    toProduct() {
-        navigation.navigate('Product');
+    toProduct(recKey) {
+        let url = 'http://192.168.1.77:8080/' + 'api/stocks/' + recKey;
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    selectedProduct: response.ecStk
+                }, () => {
+                    navigation.navigate('Product', { selectedProduct: this.state.selectedProduct })
+                })
+            })
+        // navigation.navigate('Product');
     }
 
     _extraUniqueKey(item, index) {
@@ -59,6 +72,8 @@ export default class SearchScreen extends React.Component {
     }
 
     handleProductMenu(item) {
+
+        //handle netPrice
         let netPriceString = item.netPrice.toString();
         let decimalIndex1 = netPriceString.indexOf('.');
         let length = netPriceString.length;
@@ -68,41 +83,46 @@ export default class SearchScreen extends React.Component {
         } else {
             cent = netPriceString.substring(decimalIndex1 + 1, length)
         }
-        let discPriceString = (item.netPrice - item.refPrice1).toString();
-        let decimalIndex2 = discPriceString.indexOf('.');
-        // if (item.netPrice - item.refPrice1 == 0) {
-        //     discPriceString = ''
-        // }
 
-        if(decimalIndex2 == -1 && (item.netPrice - item.refPrice1 == 0)){
-            discPriceString = ''
-        }else if(decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2+2) != '0'){
+        //handle discPrice
+        let discPriceString = ('$').concat((item.netPrice - item.refPrice1).toString());
+        let decimalIndex2 = discPriceString.indexOf('.');
+        if (decimalIndex2 == -1 && (item.netPrice - item.refPrice1 == 0)) {
+            discPriceString = null
+        } else if (decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2 + 2) != '0') {
             discPriceString = discPriceString.substring(0, decimalIndex2 + 3)
-        }else if(decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2+2) == '0'){
+        } else if (decimalIndex2 != -1 && discPriceString.charAt(decimalIndex2 + 2) == '0') {
             discPriceString = discPriceString.substring(0, decimalIndex2 + 2)
         }
-
-
 
         return (
             <TouchableOpacity
                 key={item.stkId}
                 activeOpacity={0.3}
-                onPress={() => this.toProduct()}
+                onPress={() => this.toProduct(item.recKey)}
             >
                 <View style={styles.productItemContainer}>
                     <Image style={styles.productImage} />
                     <View>
                         <Text numberOfLines={2} style={styles.productName}>{item.name}</Text>
                         <Text style={styles.productListPrice}>U.P.$ {item.listPrice}</Text>
-                        <Text style={styles.productPriceLabel}>{item.priceLabel}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.productNetPriceDollar}>${decimalIndex1 == -1 ? netPriceString : netPriceString.substring(0, decimalIndex1)}</Text>
                             <Text style={styles.productNetPriceCent}>{decimalIndex1 == -1 ? '00' : cent}</Text>
+                            <Text style={styles.productPriceLabel}>{item.priceLabel}</Text>
                         </View>
+
+                        {/* <Text style={styles.membersSpecialText}>Members' Special:</Text> */}
+                        <Text style={styles.membersSpecialText}>{discPriceString == null && item.ewallet == 0 ? null : "Members' Special:"}</Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.deliveryText}>{discPriceString}</Text>
+                            <Text style={styles.voucherMention}>{discPriceString == null ? null : 'Free'}</Text>
+                            <Text style={styles.voucherMentionFocus}>{discPriceString}</Text>
+                            <Text style={styles.voucherMention}>{item.ewallet == 0 ? null : '+Extra'}</Text>
+                            <Text style={styles.voucherMentionFocus}>{item.ewallet == 0 ? null : '$' + item.ewallet}</Text>
+                            <Text style={styles.voucherMention}>{item.ewallet == 0 ? null : 'Cashback'}</Text>
                         </View>
+
+
                     </View>
                 </View>
             </TouchableOpacity>
@@ -205,18 +225,26 @@ const styles = StyleSheet.create({
     },
     productNetPriceCent: {
         color: 'red',
-        fontSize: 9,
+        fontSize: 12,
         fontWeight: ('bold', '600'),
         backgroundColor: 'white',
         marginTop: 12,
         textDecorationLine: 'underline'
     },
-    deliveryText: {
-        color: '#8a8a8a',
+    membersSpecialText: {
         backgroundColor: 'white',
+        color: '#8a8a8a',
+    },
+    voucherMention: {
+        color: 'red',
         fontSize: 15,
-        fontWeight: ('bold', '400'),
-        paddingLeft: 5,
-        marginRight: 10
+        fontWeight: ('bold', '500'),
+    },
+    voucherMentionFocus: {
+        color: '#180077',
+        fontSize: 15,
+        fontWeight: ('bold', '500'),
+        marginLeft: 5,
+        marginRight: 5
     }
 })

@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
     navigation = this.props.navigation;
     this.state = {
       refreshing: false,
-      serviceEntry: 'localhost:8080',
+      serviceEntry: 'http://192.168.1.77:8080/',
       searchText: '',
       selectedShopMenus: ''
     };
@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
       });
     }, 0);
 
-    let url = 'http://172.20.10.9:8080/' + 'api/stocks';
+    let url = 'http://192.168.1.77:8080/' + 'api/stocks';
     const params = new URLSearchParams();
     params.append('orgId', 'A01');
     url += ('?' + params);
@@ -103,11 +103,11 @@ export default class HomeScreen extends React.Component {
             loop={true}
             autoplay={true}
             autoplayTimeout={2}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Product')}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}><Image style={styles.swiperPic} source={require('../image/swiper1.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}><Image style={styles.swiperPic} source={require('../image/swiper2.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}><Image style={styles.swiperPic} source={require('../image/swiper3.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}><Image style={styles.swiperPic} source={require('../image/swiper4.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => { }}><Image style={styles.swiperPic} source={require('../image/swiper5.png')} /></TouchableOpacity>
           </Swiper>
           <View>
             <ScrollView style={styles.scrollItemContainer} horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
