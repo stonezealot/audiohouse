@@ -52,7 +52,7 @@ export default class SearchScreen extends React.Component {
     }
 
     toProduct(recKey) {
-        let url = 'http://192.168.1.77:8080/' + 'api/stocks/' + recKey;
+        let url = 'http://172.20.10.9:8080/' + 'api/stocks/' + recKey;
         fetch(url, {
             method: 'GET'
         })
@@ -135,6 +135,7 @@ export default class SearchScreen extends React.Component {
                 <View style={styles.searchContainer}>
                     <TextInput placeholder="Search"
                         style={styles.searchInput}
+                        placeholder={this.state.searchText}
                         onSubmitEditing={(inputData) => this.onChangeText(inputData.nativeEvent.text.toUpperCase())}
                     ></TextInput>
                     <Image style={styles.searchIcon} source={require('../image/search.png')}></Image>

@@ -43,7 +43,8 @@ render() {
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         'rogue-hero': require('./assets/fonts/Rogue-Hero-Expanded-Italic.ttf'),
-        'Bitsumishi': require('./assets/fonts/Bitsumishi.ttf')
+        'Bitsumishi': require('./assets/fonts/Bitsumishi.ttf'),
+        'pledg':require('./assets/fonts/PLEDG-KI.ttf')
       }),
     ]);
   };

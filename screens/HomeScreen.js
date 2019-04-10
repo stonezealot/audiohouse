@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
     navigation = this.props.navigation;
     this.state = {
       refreshing: false,
-      serviceEntry: 'http://192.168.1.77:8080/',
+      serviceEntry: 'http://172.20.10.9:8080/',
       searchText: '',
       selectedShopMenus: ''
     };
@@ -55,7 +55,7 @@ export default class HomeScreen extends React.Component {
       });
     }, 0);
 
-    let url = 'http://192.168.1.77:8080/' + 'api/stocks';
+    let url = 'http://172.20.10.9:8080/' + 'api/stocks';
     const params = new URLSearchParams();
     params.append('orgId', 'A01');
     url += ('?' + params);

@@ -15,7 +15,8 @@ export default class StartScreen extends React.Component {
     componentDidMount() {
         const { navigate } = this.props.navigation;
         setTimeout(function () {
-            navigate('Main');
+            // navigate('Main');
+            navigate('Login');
         }, 1000)
     }
 

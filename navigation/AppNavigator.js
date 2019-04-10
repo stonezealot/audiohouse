@@ -12,6 +12,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import StartScreen from '../screens/StartScreen';
 import ProductScreen from '../screens/ProductScreen'
 import SearchScreen from '../screens/SearchScreen'
+import LoginScreen from '../screens/LoginScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -23,6 +24,13 @@ export default createAppContainer(createStackNavigator({
     screen: StartScreen,
     navigationOptions: {
       header: null
+    },
+  },
+  Login:{
+    screen: LoginScreen,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: false
     },
   },
   Main: {
