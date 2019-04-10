@@ -30,7 +30,8 @@ export default class LoginScreen extends React.Component {
             toHome: false,
             toRigistration: false,
             loading: false,
-            home:''
+            home: '',
+            log: ''
         }
         navigation = this.props.navigation;
         this.handleLoginButton = this.handleLoginButton.bind(this);
@@ -90,8 +91,6 @@ export default class LoginScreen extends React.Component {
                 url += ('?' + params);
                 let promiseObject = { url: url, nameString: 'stocks' };
                 promiseArray.push(promiseObject);
-
-
                 return Promise.all([
                     ...promiseArray.map(el =>
                         fetch(el.url)
@@ -104,7 +103,9 @@ export default class LoginScreen extends React.Component {
                 ]);
             })
             .then(() => {
-                this.setState({ toHome: true });
+                // this.setState({ toHome: true });
+                console.log(this.state.home);
+                navigation.navigate('Home')
             })
             .catch(error => {
                 // console.log(error);
@@ -157,6 +158,9 @@ export default class LoginScreen extends React.Component {
                         onPress={this.handleLoginButton.bind(this)}>
                         <Text style={styles.loginText}>Login In</Text>
                     </TouchableOpacity>
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={styles.logText}>{log || null}</Text>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         )
@@ -209,5 +213,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: ('bold', '600'),
         textAlign: 'center',
+    },
+    logText: {
+        fontSize: 15,
+        color:'red'
     }
 })

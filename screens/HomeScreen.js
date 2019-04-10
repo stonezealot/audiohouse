@@ -36,6 +36,12 @@ export default class HomeScreen extends React.Component {
     };
   }
 
+  getStorage = async () => {
+    console.log('getStorage mobile');
+    let home = await SecureStore.getItemAsync('home');
+  }
+
+
   _onRefresh = () => {
     this.setState({ refreshing: true });
     // fetchData().then(() => {
