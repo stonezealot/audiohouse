@@ -31,7 +31,8 @@ export default class LoginScreen extends React.Component {
             toRigistration: false,
             loading: false,
             home: '',
-            log: ''
+            log: '',
+            selectedShopMenus: ''
         }
         navigation = this.props.navigation;
         this.handleLoginButton = this.handleLoginButton.bind(this);
@@ -71,7 +72,7 @@ export default class LoginScreen extends React.Component {
             .then(response => {
                 console.log('response', response);
                 if (!response.ok) {
-                    throw response;
+                    // throw response;
                 } else {
                     return response.json();
                 }
@@ -105,7 +106,8 @@ export default class LoginScreen extends React.Component {
             .then(() => {
                 // this.setState({ toHome: true });
                 console.log(this.state.home);
-                navigation.navigate('Home')
+                console.log(SecureStore.getItemAsync('stocks'));
+                navigation.navigate('Home', { serviceEntry: this.state.serviceEntry })
             })
             .catch(error => {
                 // console.log(error);
@@ -126,10 +128,6 @@ export default class LoginScreen extends React.Component {
     render() {
 
         const { name, pwd, log, toHome, toRegistration, loading } = this.state;
-
-        // if (toHome === true) {
-        //     navigation.navigate('Home')
-        // }
 
         return (
             <KeyboardAvoidingView
@@ -154,10 +152,21 @@ export default class LoginScreen extends React.Component {
                         onChangeText={(pwd) => { this.setState({ pwd }) }}
                         value={pwd}
                     />
-                    <TouchableOpacity style={styles.loginButton}
-                        onPress={this.handleLoginButton.bind(this)}>
-                        <Text style={styles.loginText}>Login In</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.loginButton}
+                            onPress={this.handleLoginButton.bind(this)}>
+                            <Text style={styles.loginText}>Login In</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.RegisterButton}
+                            onPress={this.handleLoginButton.bind(this)}>
+                            <Text style={styles.loginText}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ marginTop: 20 }}>
+                        <TouchableOpacity>
+                            <Text style={styles.forgotText}>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={{ marginTop: 10 }}>
                         <Text style={styles.logText}>{log || null}</Text>
                     </View>
@@ -202,11 +211,21 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         height: 40,
-        width: width * 3 / 5,
+        width: width * 1.9 / 5,
         borderRadius: 10,
         backgroundColor: '#EE113D',
         justifyContent: 'center',
         overflow: 'hidden',
+        marginRight: 10
+    },
+    RegisterButton: {
+        height: 40,
+        width: width * 1.9 / 5,
+        borderRadius: 10,
+        backgroundColor: '#28108A',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        marginLeft: 10
     },
     loginText: {
         fontSize: 18,
@@ -214,8 +233,12 @@ const styles = StyleSheet.create({
         fontWeight: ('bold', '600'),
         textAlign: 'center',
     },
+    forgotText: {
+        color: 'gray',
+        textDecorationLine: 'underline'
+    },
     logText: {
         fontSize: 15,
-        color:'red'
+        color: 'red'
     }
 })

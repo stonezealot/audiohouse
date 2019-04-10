@@ -25,6 +25,7 @@ export default class SearchScreen extends React.Component {
         this.state = {
             searchText: this.props.navigation.getParam("searchText"),
             selectedShopMenus: this.props.navigation.getParam("selectedShopMenus"),
+            serviceEntry: this.props.navigation.getParam("serviceEntry"),
             selectedShopMenusUpdate: '',
             selectedProduct: ''
         }
@@ -43,6 +44,7 @@ export default class SearchScreen extends React.Component {
     onChangeText(inputData) {
         this.setState({ searchText: inputData }, () => {
             const { searchText } = this.state;
+            console.log(this.state.serviceEntry)
             this.setState({
                 selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
                     return menu.stkId.toUpperCase().includes(searchText) || menu.name.toUpperCase().includes(searchText);
@@ -52,7 +54,7 @@ export default class SearchScreen extends React.Component {
     }
 
     toProduct(recKey) {
-        let url = 'http://172.20.10.9:8080/' + 'api/stocks/' + recKey;
+        let url = this.state.serviceEntry + 'api/stocks/' + recKey;
         fetch(url, {
             method: 'GET'
         })

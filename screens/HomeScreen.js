@@ -15,6 +15,7 @@ import { WebBrowser } from 'expo';
 import { cal } from '../components/common'
 import Swiper from 'react-native-swiper'
 import URLSearchParams from 'url-search-params';
+import { SecureStore } from "../storage";
 
 var { height, width } = Dimensions.get('window');
 
@@ -30,7 +31,7 @@ export default class HomeScreen extends React.Component {
     navigation = this.props.navigation;
     this.state = {
       refreshing: false,
-      serviceEntry: 'http://172.20.10.9:8080/',
+      serviceEntry: this.props.navigation.getParam('serviceEntry'),
       searchText: '',
       selectedShopMenus: ''
     };
@@ -39,6 +40,12 @@ export default class HomeScreen extends React.Component {
   getStorage = async () => {
     console.log('getStorage mobile');
     let home = await SecureStore.getItemAsync('home');
+    let selectedShopMenus = await SecureStore.getItemAsync('stocks');
+
+    return this.setState({
+      home: JSON.parse(home),
+      selectedShopMenus: JSON.parse(selectedShopMenus),
+    })
   }
 
 
@@ -61,20 +68,7 @@ export default class HomeScreen extends React.Component {
       });
     }, 0);
 
-    let url = 'http://172.20.10.9:8080/' + 'api/stocks';
-    const params = new URLSearchParams();
-    params.append('orgId', 'A01');
-    url += ('?' + params);
-    fetch(url, {
-      method: 'GET',
-    })
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          selectedShopMenus: response,
-        }
-        );
-      });
+    this.getStorage();
 
   }
 
@@ -82,6 +76,7 @@ export default class HomeScreen extends React.Component {
     this.setState({ searchText: inputData }, () => {
       navigation.navigate('Search', { searchText: this.state.searchText })
       navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
+      navigation.navigate('Search', { serviceEntry: this.state.serviceEntry })
     });
   }
 
