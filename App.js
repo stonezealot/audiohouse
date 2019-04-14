@@ -44,7 +44,8 @@ render() {
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         'rogue-hero': require('./assets/fonts/Rogue-Hero-Expanded-Italic.ttf'),
         'Bitsumishi': require('./assets/fonts/Bitsumishi.ttf'),
-        'pledg':require('./assets/fonts/PLEDG-KI.ttf')
+        'pledg':require('./assets/fonts/PLEDG-KI.ttf'),
+        'univiapro':require('./assets/fonts/univiapro-bold.otf')
       }),
     ]);
   };

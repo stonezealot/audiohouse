@@ -73,11 +73,18 @@ export default class HomeScreen extends React.Component {
   }
 
   search(inputData) {
-    this.setState({ searchText: inputData }, () => {
-      navigation.navigate('Search', { searchText: this.state.searchText })
-      navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
-      navigation.navigate('Search', { serviceEntry: this.state.serviceEntry })
-    });
+    if(inputData != '' && inputData.toString().trim().length != 0){
+      this.setState({ searchText: inputData.toString().trim() }, () => {
+        navigation.navigate('Search', { searchText: this.state.searchText })
+        navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
+        navigation.navigate('Search', { serviceEntry: this.state.serviceEntry })
+      });
+    }
+    // this.setState({ searchText: inputData }, () => {
+    //   navigation.navigate('Search', { searchText: this.state.searchText })
+    //   navigation.navigate('Search', { selectedShopMenus: this.state.selectedShopMenus })
+    //   navigation.navigate('Search', { serviceEntry: this.state.serviceEntry })
+    // });
   }
 
 

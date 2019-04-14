@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: 'http://172.20.10.9:8080/',
+            serviceEntry: 'http://192.168.1.9:8080/',
             name: '',
             pwd: '',
             toHome: false,
@@ -36,6 +36,7 @@ export default class LoginScreen extends React.Component {
         }
         navigation = this.props.navigation;
         this.handleLoginButton = this.handleLoginButton.bind(this);
+        this.handleRegisterButton = this.handleRegisterButton.bind(this);
     }
 
     componentDidMount() {
@@ -49,7 +50,7 @@ export default class LoginScreen extends React.Component {
         // this.setState({
         //     loading: true,
         // });
-        console.log('button pressed');
+        console.log('login button pressed');
         const name = this.state.name;
         const pwd = this.state.pwd;
         const serviceEntry = this.state.serviceEntry;
@@ -125,6 +126,11 @@ export default class LoginScreen extends React.Component {
             });
     }
 
+    handleRegisterButton() {
+        navigation.navigate('Register', { serviceEntry: this.state.serviceEntry })
+    }
+
+
     render() {
 
         const { name, pwd, log, toHome, toRegistration, loading } = this.state;
@@ -158,7 +164,7 @@ export default class LoginScreen extends React.Component {
                             <Text style={styles.loginText}>Login In</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.RegisterButton}
-                            onPress={this.handleLoginButton.bind(this)}>
+                            onPress={this.handleRegisterButton.bind(this)}>
                             <Text style={styles.loginText}>Register</Text>
                         </TouchableOpacity>
                     </View>
@@ -187,6 +193,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 70,
         fontFamily: 'pledg',
+        // fontFamily:'univiapro',
         marginBottom: 80
     },
     name: {
@@ -216,7 +223,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#EE113D',
         justifyContent: 'center',
         overflow: 'hidden',
-        marginRight: 10
+        marginRight: 10,
+        alignItems: 'center',
     },
     RegisterButton: {
         height: 40,
@@ -232,6 +240,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: ('bold', '600'),
         textAlign: 'center',
+        // fontFamily:'univiapro',
     },
     forgotText: {
         color: 'gray',
