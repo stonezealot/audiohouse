@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: 'http://192.168.1.9:8080/',
+            serviceEntry: 'http://172.20.10.9:8080/',
             name: '',
             pwd: '',
             toHome: false,
@@ -176,6 +176,11 @@ export default class LoginScreen extends React.Component {
                     <View style={{ marginTop: 10 }}>
                         <Text style={styles.logText}>{log || null}</Text>
                     </View>
+                    <View style={{ marginTop: 10 }}>
+                        <TouchableOpacity>
+                            <Image style={styles.facebook} source={require('../image/loginfacebook.png')} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         )
@@ -249,5 +254,9 @@ const styles = StyleSheet.create({
     logText: {
         fontSize: 15,
         color: 'red'
+    },
+    facebook: {
+        height: 30,
+        width: 30
     }
 })

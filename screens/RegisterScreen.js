@@ -152,6 +152,7 @@ export default class LoginScreen extends React.Component {
                             onSubmitEditing={() => { this.comfirmTextInput.focus(); }}
                             onChangeText={(pwd) => { this.setState({ pwd }) }}
                             value={pwd}
+                            secureTextEntry={true}
                         />
                     </View>
                     <View style={styles.combineView}>
@@ -163,6 +164,7 @@ export default class LoginScreen extends React.Component {
                             onSubmitEditing={() => { this.emailTextInput.focus(); }}
                             onChangeText={(comfirmPwd) => { this.setState({ comfirmPwd }) }}
                             value={comfirmPwd}
+                            secureTextEntry={true}
                         />
                     </View>
                     <View style={styles.combineView}>
