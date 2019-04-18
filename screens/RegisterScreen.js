@@ -22,7 +22,6 @@ var { height, width } = Dimensions.get('window');
 export default class LoginScreen extends React.Component {
 
     static navigationOptions = {
-
     };
 
     constructor(props) {

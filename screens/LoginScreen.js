@@ -60,7 +60,7 @@ export default class LoginScreen extends React.Component {
             orgId: "A01",
             name: name,
             pwd: pwd,
-            ecshopID: "AUDIOHOUSE",
+            ecshopId: "AUDIOHOUSE",
             guestRecKey: ""
         };
         fetch(url, {
@@ -82,6 +82,7 @@ export default class LoginScreen extends React.Component {
                 this.setState({ home: response });
                 return Promise.all([
                     SecureStore.setItemAsync('home', JSON.stringify(response)),
+                    SecureStore.setItemAsync('serviceEntry', this.state.serviceEntry),
                     response,
                 ])
             })
@@ -107,8 +108,9 @@ export default class LoginScreen extends React.Component {
             .then(() => {
                 // this.setState({ toHome: true });
                 console.log(this.state.home);
+                console.log(this.state.serviceEntry);
                 console.log(SecureStore.getItemAsync('stocks'));
-                navigation.navigate('Home', { serviceEntry: this.state.serviceEntry })
+                navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
             })
             .catch(error => {
                 // console.log(error);

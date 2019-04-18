@@ -1,14 +1,14 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 
-export default class SettingsScreen extends React.Component {
+export default class MyselfScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
     };
   }
   static navigationOptions = {
-    title: 'app.json',
+    header: null,
   };
 
   render() {

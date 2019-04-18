@@ -8,7 +8,7 @@ import {
 } from 'react-navigation';
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import MyselfScreen from '../screens/MyselfScreen';
 import StartScreen from '../screens/StartScreen';
 import ProductScreen from '../screens/ProductScreen'
 import SearchScreen from '../screens/SearchScreen'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform ,View,Text } from 'react-native';
+import { Platform, View, Text } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -10,7 +10,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import MyselfScreen from '../screens/MyselfScreen';
 
 
 const HomeStack = createStackNavigator({
@@ -45,11 +45,11 @@ CartStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const MyselfStack = createStackNavigator({
+  Myself: MyselfScreen,
 });
 
-SettingsStack.navigationOptions = {
+MyselfStack.navigationOptions = {
   tabBarLabel: 'Myself',
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
@@ -64,7 +64,7 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   CartStack,
-  SettingsStack,
+  MyselfStack,
 });
 
 

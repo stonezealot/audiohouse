@@ -32,6 +32,7 @@ export default class HomeScreen extends React.Component {
     this.state = {
       refreshing: false,
       serviceEntry: this.props.navigation.getParam('serviceEntry'),
+      home:this.props.navigation.getParam('home'),
       searchText: '',
       selectedShopMenus: ''
     };
