@@ -9,11 +9,12 @@ import {
   View,
   Dimensions,
   Modal,
-  FlatList
+  FlatList,
+  DeviceEventEmitter
 } from 'react-native';
 import { SecureStore } from "../storage";
 import URLSearchParams from 'url-search-params';
-import { TextInput } from 'react-native-gesture-handler';
+import SwipeView from 'react-native-swipeout';
 
 var { height, width } = Dimensions.get('window');
 
@@ -24,15 +25,19 @@ export default class CartScreen extends React.Component {
     this.state = {
       serviceEntry: '',
       home: '',
-      cartlines: '',
+      cartlines: this.props.navigation.getParam("cartlines"),
       qty: 1,
-      refresh: true
+      refresh: true,
     };
     navigation = this.props.navigation;
     this.handleCheckoutButton = this.handleCheckoutButton.bind(this);
     this.qtyPlus = this.qtyPlus.bind(this);
     this.qtyMinus = this.qtyMinus.bind(this);
+    this.cartlineDelete = this.cartlineDelete.bind(this);
+    this.getStorage = this.getStorage.bind(this);
+    this.props.navigation.addListener('willFocus', () => {this.getStorage()});
   }
+
   static navigationOptions = {
     title: 'Cart',
   };
@@ -60,22 +65,19 @@ export default class CartScreen extends React.Component {
         .then(response => response.json())
         .then(response => {
           this.setState({ cartlines: response }, () => {
-            console.log(this.state.cartlines)
+            // console.log(this.state.cartlines)
           })
         })
     })
   }
 
   componentDidMount() {
-
     this.getStorage();
-
   }
-
 
   handleCheckoutButton() {
     this.setState({
-      refresh: !this.state.refresh
+      cartlines: this.state.cartlines
     })
   }
 
@@ -143,36 +145,82 @@ export default class CartScreen extends React.Component {
       })
   }
 
+  cartlineDelete(recKey){
+    const serviceEntry = this.state.serviceEntry;
+    const home = this.state.home;
+    let url = serviceEntry + 'api/cartlines/' + recKey + '/delete';
+    console.log(url);
+    console.log(home.custId);
+    const body = {
+      orgId: "A01",
+      custId: home.custId,
+      ecshopId: "AUDIOHOUSE"
+    };
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    })
+      .then(
+        response => {
+          if (!response.ok) {
+          } else {
+            return response.json();
+          }
+        })
+      .then(response => {
+        this.setState({
+          cartlines: response
+        })
+      })
+  }
+
   handleCartMenu(item) {
+
+    const Rightbuttons=[
+      {
+        backgroundColor: 'red',
+        color: 'white',
+        text: 'Delete',
+        onPress: () => this.cartlineDelete(item.recKey)
+      }]
+
     return (
-      <View style={styles.cartlineItemContainer}>
-        <Image style={styles.cartlineImage} />
-        <View>
-          <Text style={styles.cartlineName}>{item.name}</Text>
-          <View style={{ height: 70, backgroundColor: 'pink' }}>
-            <TouchableOpacity>
-              <Text style={styles.choiceText}>delivery</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.choiceText}>installation</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ width: width / 5, height: 40, justifyContent: 'center' ,marginRight:60}}>
-              <Text style={styles.netPrice}>${item.netPrice}</Text>
+      <SwipeView
+        right={Rightbuttons}
+        autoClose={true}>
+        <View style={styles.cartlineItemContainer}>
+
+          <Image style={styles.cartlineImage} />
+          <View>
+            <Text style={styles.cartlineName}>{item.name}</Text>
+            <View style={{ height: 70, backgroundColor: 'pink' }}>
+              <TouchableOpacity>
+                <Text style={styles.choiceText}>delivery</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.choiceText}>installation</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => this.qtyMinus(item.recKey)}>
-              <Image style={styles.handleQty} source={require('../image/minus.png')} />
-            </TouchableOpacity>
-            <View style={{ width: 60, height: 40, justifyContent: 'center' ,alignItems:'center'}}>
-              <Text style={styles.qty}>{item.stkQty}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ width: width / 5, height: 40, justifyContent: 'center', marginRight: 60 }}>
+                <Text style={styles.netPrice}>${item.netPrice}</Text>
+              </View>
+              <TouchableOpacity onPress={() => this.qtyMinus(item.recKey)}>
+                <Image style={styles.handleQty} source={require('../image/minus.png')} />
+              </TouchableOpacity>
+              <View style={{ width: 60, height: 40, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.qty}>{item.stkQty}</Text>
+              </View>
+              <TouchableOpacity onPress={() => this.qtyPlus(item.recKey)}>
+                <Image style={styles.handleQty} source={require('../image/plus.png')} />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => this.qtyPlus(item.recKey)}>
-              <Image style={styles.handleQty} source={require('../image/plus.png')} />
-            </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </SwipeView>
     )
   }
 
@@ -249,7 +297,7 @@ const styles = StyleSheet.create({
   },
   qty: {
     backgroundColor: 'white',
-    textAlign:'center',
+    textAlign: 'center',
     width: 40,
     fontSize: 20
   },

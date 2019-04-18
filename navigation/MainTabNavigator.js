@@ -41,8 +41,10 @@ CartStack.navigationOptions = {
       focused={focused}
       tintColor={tintColor}
       name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+      style={{color:tintColor}}
     />
   ),
+  // tabBarOnPress
 };
 
 const MyselfStack = createStackNavigator({

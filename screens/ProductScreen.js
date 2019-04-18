@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from "react-native-scrollable-tab-view"
 import SelectDialog from 'react-native-select-dialog';
+import { SecureStore } from "../storage";
 
 
 var { height, width } = Dimensions.get('window');
@@ -23,12 +24,71 @@ export default class ProductScreen extends React.Component {
     super(props);
     this.state = {
       selectedProduct: this.props.navigation.getParam("selectedProduct"),
+      serviceEntry: '',
+      home: '',
+      cartlines: ''
     }
+    this.addToCart = this.addToCart.bind(this);
   }
 
   static navigationOptions = {
     title: '详情',
   };
+
+  getStorage = async () => {
+    console.log('getStorage mobile');
+    let home = await SecureStore.getItemAsync('home');
+    let serviceEntry = await SecureStore.getItemAsync('serviceEntry');
+
+    return this.setState({
+      home: JSON.parse(home),
+      serviceEntry: serviceEntry
+    })
+  }
+
+  componentDidMount() {
+
+    this.getStorage();
+
+  }
+
+  addToCart(stkId) {
+    const serviceEntry = this.state.serviceEntry;
+    const home = this.state.home;
+    let url = serviceEntry + 'api/add-to-cart';
+    console.log(url);
+    console.log(home.custId);
+    const body = {
+      orgId: "A01",
+      custId: home.custId,
+      guestFlg: "Y",
+      ecshopId: "AUDIOHOUSE",
+      stkId: stkId,
+      qty: "1",
+      cashcarry: "N",
+      installationFlg: "N"
+    };
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    })
+      .then(
+        response => {
+          if (!response.ok) {
+          } else {
+            return response.json();
+          }
+        })
+      .then(response => {
+        this.setState({
+          cartlines: response
+        })
+      })
+
+  }
 
   render() {
 
@@ -126,12 +186,14 @@ export default class ProductScreen extends React.Component {
             <TouchableOpacity>
               <Image style={styles.bottomLeftBtn} source={require('../image/facebook.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('Cart') }}>
+            <TouchableOpacity onPress={() => {
+              this.props.navigation.navigate('ProductCart',{ cartlines: this.state.cartlines })
+            }}>
               <Image style={styles.bottomLeftBtn} source={require('../image/cart.png')} />
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => this.addToCart(selectedProduct.stkId)}>
               <View style={styles.addToCartBtn}>
                 <Text style={styles.addToCartBtnText}>Add to Cart</Text>
               </View>

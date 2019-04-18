@@ -58,5 +58,11 @@ export default createAppContainer(createStackNavigator({
     navigationOptions: {
       header: null,
     }
+  },
+  ProductCart: {
+    screen: CartScreen,
+    navigationOptions: {
+      header: null,
+    }
   }
 }));
