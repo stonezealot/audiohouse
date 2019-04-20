@@ -97,7 +97,7 @@ export default class LoginScreen extends React.Component {
                         return response.json();
                     }
                 })
-                .then(() =>{
+                .then(() => {
                     console.log('Register successfully');
                     navigation.navigate('Login');
                 })
@@ -124,10 +124,10 @@ export default class LoginScreen extends React.Component {
                 style={{ flex: 1 }}
                 behavior='padding'
             >
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Register</Text>
+                </View>
                 <ScrollView style={styles.container}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>Register</Text>
-                    </View>
                     <View style={styles.subtitleContainer}>
                         <Text style={styles.subtitle}>Basic Information</Text>
                     </View>

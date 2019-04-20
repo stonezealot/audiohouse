@@ -19,6 +19,9 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
+  tabBarOptions: {
+    activeTintColor: '#EE113D',
+  },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       tintColor={tintColor}
@@ -36,15 +39,17 @@ const CartStack = createStackNavigator({
 
 CartStack.navigationOptions = {
   tabBarLabel: 'Cart',
+  tabBarOptions: {
+    activeTintColor: '#EE113D',
+  },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}
       tintColor={tintColor}
       name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
-      style={{color:tintColor}}
+      style={{ color: tintColor }}
     />
   ),
-  // tabBarOnPress
 };
 
 const MyselfStack = createStackNavigator({
@@ -53,6 +58,9 @@ const MyselfStack = createStackNavigator({
 
 MyselfStack.navigationOptions = {
   tabBarLabel: 'Myself',
+  tabBarOptions: {
+    activeTintColor: '#EE113D',
+  },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
       focused={focused}

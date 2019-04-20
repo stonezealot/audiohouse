@@ -9,6 +9,7 @@ import {
   View,
   Dimensions,
   Modal,
+  Picker,
   FlatList
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar, DefaultTabBar } from "react-native-scrollable-tab-view"
@@ -26,9 +27,11 @@ export default class ProductScreen extends React.Component {
       selectedProduct: this.props.navigation.getParam("selectedProduct"),
       serviceEntry: '',
       home: '',
-      cartlines: ''
+      cartlines: '',
+      showDeliveryChoice: false
     }
     this.addToCart = this.addToCart.bind(this);
+    this.closeDeliveryModel = this.closeDeliveryModel.bind(this);
   }
 
   static navigationOptions = {
@@ -90,6 +93,10 @@ export default class ProductScreen extends React.Component {
 
   }
 
+  closeDeliveryModel() {
+    this.setState({ showDeliveryChoice: false })
+  }
+
   render() {
 
     const { selectedProduct } = this.state;
@@ -140,8 +147,8 @@ export default class ProductScreen extends React.Component {
           <View style={styles.middleChoice}>
             <Image style={styles.largeShippingIcon} source={require('../image/local_shipping.png')} />
             <Text style={styles.deliveryText}>Delivery</Text>
-            <TouchableOpacity>
-              <Text style={styles.dropdownSelection}>Stardard Delivery({selectedProduct.ref8})</Text>
+            <TouchableOpacity onPress={() => this.setState({ showDeliveryChoice: true })}>
+              <Text style={styles.dropdownSelection}>Stardard Delivery(${selectedProduct.ref8})</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.middleChoice}>
@@ -173,8 +180,6 @@ export default class ProductScreen extends React.Component {
               </View>
               <Text tabLabel='Terms&Conditions'>Terms&Conditions</Text >
             </ScrollableTabView>
-
-
           </View>
         </ScrollView>
         <View style={styles.bottomBtnContainer}>
@@ -187,7 +192,7 @@ export default class ProductScreen extends React.Component {
               <Image style={styles.bottomLeftBtn} source={require('../image/facebook.png')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              this.props.navigation.navigate('ProductCart',{ cartlines: this.state.cartlines })
+              this.props.navigation.navigate('ProductCart', { cartlines: this.state.cartlines })
             }}>
               <Image style={styles.bottomLeftBtn} source={require('../image/cart.png')} />
             </TouchableOpacity>
@@ -200,6 +205,19 @@ export default class ProductScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+        <Modal
+          animationType='slide'
+          visible={this.state.showDeliveryChoice}
+          onRequestClose={() => { }}
+          transparent={true}>
+          <View style={styles.deliveryChoiceModal}>
+            <TouchableOpacity onPress={this.closeDeliveryModel}>
+              <View >
+                <Text>Close</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     )
   }
@@ -350,6 +368,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 17,
     marginRight: 17
-
+  },
+  deliveryChoiceModal: {
+    width: width,
+    backgroundColor: 'pink',
+    height: 200,
+    position: 'absolute',
+    bottom: 0,
   }
 })
