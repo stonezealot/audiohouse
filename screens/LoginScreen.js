@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: 'http://192.168.1.12:8080/',
+            serviceEntry: 'http://172.20.10.9:8080/',
             name: '',
             pwd: '',
             toHome: false,
@@ -92,24 +92,32 @@ export default class LoginScreen extends React.Component {
                 let params = new URLSearchParams();
                 params.append('orgId', 'A01');
                 url += ('?' + params);
-                let promiseObject = { url: url, nameString: 'stocks' };
-                promiseArray.push(promiseObject);
-                return Promise.all([
-                    ...promiseArray.map(el =>
-                        fetch(el.url)
-                            .then(response => {
-                                console.log(el.nameString);
-                                return response.json();
-                            })
-                            .then(response => SecureStore.setItemAsync(el.nameString, JSON.stringify(response)))
-                    )
-                ]);
+                // let promiseObject = { url: url, nameString: 'stocks' };
+                // promiseArray.push(promiseObject);
+                // return Promise.all([
+                //     ...promiseArray.map(el =>
+                //         fetch(el.url)
+                //             .then(response => {
+                //                 console.log(el.nameString);
+                //                 return response.json();
+                //             })
+                //             .then(response => SecureStore.setItemAsync(el.nameString, JSON.stringify(response)))
+                //     )
+                // ]);
+
+
+                
+                fetch(url,{
+                    method:'GET'
+                })
+                .then(response => response.json())
+                .then(response =>SecureStore.setItemAsync('stocks',JSON.stringify(response)))
             })
             .then(() => {
                 // this.setState({ toHome: true });
-                console.log(this.state.home);
-                console.log(this.state.serviceEntry);
-                console.log(SecureStore.getItemAsync('stocks'));
+                console.log('home:  '+this.state.home);
+                console.log('serviceEntry:  '+this.state.serviceEntry);
+                console.log('stocks:  '+SecureStore.getItemAsync('stocks'));
                 navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
             })
             .catch(error => {

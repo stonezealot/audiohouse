@@ -28,10 +28,18 @@ export default class ProductScreen extends React.Component {
       serviceEntry: '',
       home: '',
       cartlines: '',
-      showDeliveryChoice: false
+      installationFlg: 'Y',
+      ref8: '',
+      cashcarry: 'N',
+      showDeliveryModal: false,
+      showInstallationModal: false
     }
     this.addToCart = this.addToCart.bind(this);
-    this.closeDeliveryModel = this.closeDeliveryModel.bind(this);
+    this.installationFlgY = this.installationFlgY.bind(this);
+    this.installationFlgN = this.installationFlgN.bind(this);
+    this.cashcarryY = this.cashcarryY.bind(this);
+    this.cashcarryN = this.cashcarryN.bind(this);
+
   }
 
   static navigationOptions = {
@@ -49,10 +57,14 @@ export default class ProductScreen extends React.Component {
     })
   }
 
+  componentWillMount() {
+    this.setState({
+      ref8: this.state.selectedProduct.ref8
+    })
+  }
+
   componentDidMount() {
-
     this.getStorage();
-
   }
 
   addToCart(stkId) {
@@ -68,8 +80,8 @@ export default class ProductScreen extends React.Component {
       ecshopId: "AUDIOHOUSE",
       stkId: stkId,
       qty: "1",
-      cashcarry: "N",
-      installationFlg: "N"
+      cashcarry: this.state.cashcarry,
+      installationFlg: this.state.installationFlg
     };
     fetch(url, {
       method: 'POST',
@@ -93,8 +105,32 @@ export default class ProductScreen extends React.Component {
 
   }
 
-  closeDeliveryModel() {
-    this.setState({ showDeliveryChoice: false })
+  installationFlgY() {
+    this.setState({
+      installationFlg: 'Y',
+      showInstallationModal: false
+    })
+  }
+
+  installationFlgN() {
+    this.setState({
+      installationFlg: 'N',
+      showInstallationModal: false
+    })
+  }
+
+  cashcarryN() {
+    this.setState({
+      cashcarry: 'N',
+      showDeliveryModal: false
+    })
+  }
+
+  cashcarryY() {
+    this.setState({
+      cashcarry: 'Y',
+      showDeliveryModal: false
+    })
   }
 
   render() {
@@ -144,16 +180,56 @@ export default class ProductScreen extends React.Component {
               {this.state.selectedProduct.name}
             </Text>
           </View>
+          {this.state.selectedProduct.cat6_id != null && this.state.selectedProduct.cat6_id != ''
+            ?
+            <View style={styles.middleChoice}>
+              <Image style={styles.largeShippingIcon} source={require('../image/installation.png')} />
+              <Text style={styles.membersSpecialText}>Installation</Text>
+              <TouchableOpacity onPress={() => this.setState({ showInstallationModal: true })}>
+                <Text style={styles.dropdownSelection}>{this.state.installationFlg == 'Y' ? selectedProduct.cat6_name : 'No Installation'}</Text>
+              </TouchableOpacity>
+            </View>
+            :
+            null
+          }
           <View style={styles.middleChoice}>
             <Image style={styles.largeShippingIcon} source={require('../image/local_shipping.png')} />
             <Text style={styles.deliveryText}>Delivery</Text>
-            <TouchableOpacity onPress={() => this.setState({ showDeliveryChoice: true })}>
-              <Text style={styles.dropdownSelection}>Stardard Delivery(${selectedProduct.ref8})</Text>
-            </TouchableOpacity>
+            {this.state.selectedProduct.ref8 == -1
+              ?
+              <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: true })}>
+                <Text style={styles.dropdownSelection}>Self-collect after 3 working days</Text>
+              </TouchableOpacity>
+              :
+              (this.state.selectedProduct.ref8 == 0
+                ?
+                (this.state.cashcarry == 'N'
+                  ?
+                  <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: true })}>
+                    <Text style={styles.dropdownSelection}>Free Of Charge</Text>
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: true })}>
+                    <Text style={styles.dropdownSelection}>Self-collect after 3 working days</Text>
+                  </TouchableOpacity>
+                )
+                :
+                (this.state.cashcarry == 'N'
+                  ?
+                  <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: true })}>
+                    <Text style={styles.dropdownSelection}>Standard Delivery(${this.state.selectedProduct.ref8})</Text>
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: true })}>
+                    <Text style={styles.dropdownSelection}>Self-collect after 3 working days</Text>
+                  </TouchableOpacity>
+                )
+              )
+            }
           </View>
           <View style={styles.middleChoice}>
             <Image style={styles.largeShippingIcon} source={require('../image/users.png')} />
-            <Text style={styles.membersSpecialText}>Members' Special:</Text>
+            <Text style={styles.membersSpecialText}>Members' Special</Text>
             <Text style={styles.cartEmphasiseCash}>{discPriceString == null ? null : 'Free'}</Text>
             <Text style={styles.voucherMentionFocus}>{discPriceString}</Text>
             <Text style={styles.cartEmphasiseCash}>{'1' === '1' ? '+' : null}</Text>
@@ -207,14 +283,41 @@ export default class ProductScreen extends React.Component {
         </View>
         <Modal
           animationType='slide'
-          visible={this.state.showDeliveryChoice}
-          onRequestClose={() => { }}
-          transparent={true}>
+          visible={this.state.showInstallationModal}
+          transparent={true}
+        >
           <View style={styles.deliveryChoiceModal}>
-            <TouchableOpacity onPress={this.closeDeliveryModel}>
-              <View >
-                <Text>Close</Text>
-              </View>
+            <TouchableOpacity onPress={this.installationFlgY}>
+              <Text style={styles.modalItem}>{this.state.selectedProduct.cat6_name}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.installationFlgN}>
+              <Text style={styles.modalItem}>No Installation</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal
+          animationType='fade'
+          visible={this.state.showDeliveryModal}
+          transparent={true}>
+          <View style={{ backgroundColor: 'black', flex: 1, opacity: 0.2 }}></View>
+          <View style={styles.deliveryChoiceModal}>
+            {this.state.selectedProduct.ref8 == 0
+              ?
+              <TouchableOpacity onPress={this.cashcarryN}>
+                <Text style={styles.modalItem}>Free Of Charge</Text>
+              </TouchableOpacity>
+              :
+              (this.state.selectedProduct.ref8 == -1
+                ?
+                null
+                :
+                <TouchableOpacity onPress={this.cashcarryN}>
+                  <Text style={styles.modalItem}>Standard Delivery(${this.state.selectedProduct.ref8})</Text>
+                </TouchableOpacity>
+              )
+            }
+            <TouchableOpacity onPress={this.cashcarryY}>
+              <Text style={styles.modalItem}>Self-collect after 3 working days</Text>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -371,9 +474,23 @@ const styles = StyleSheet.create({
   },
   deliveryChoiceModal: {
     width: width,
-    backgroundColor: 'pink',
-    height: 200,
+    backgroundColor: 'white',
+    height: 300,
     position: 'absolute',
     bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderColor: '#D5D5D5',
+  },
+  modalItem: {
+    margin: 30,
+    height: 30,
+    width: width * 3 / 5,
+    fontSize: 20,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'gray'
   }
 })
