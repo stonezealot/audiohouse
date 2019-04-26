@@ -105,19 +105,24 @@ export default class LoginScreen extends React.Component {
                 //     )
                 // ]);
 
-
-                
-                fetch(url,{
-                    method:'GET'
+                fetch(url, {
+                    method: 'GET'
                 })
-                .then(response => response.json())
-                .then(response =>SecureStore.setItemAsync('stocks',JSON.stringify(response)))
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log('setStocks')
+                        return SecureStore.setItemAsync('stocks', JSON.stringify(response))
+                    })
+                    // .then(()=>{
+                    //     console.log('go to Home')
+                    //     navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
+                    // })
             })
             .then(() => {
                 // this.setState({ toHome: true });
-                console.log('home:  '+this.state.home);
-                console.log('serviceEntry:  '+this.state.serviceEntry);
-                console.log('stocks:  '+SecureStore.getItemAsync('stocks'));
+                console.log('home:  ' + this.state.home);
+                console.log('serviceEntry:  ' + this.state.serviceEntry);
+                console.log('stocks:  ' + SecureStore.getItemAsync('stocks'));
                 navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
             })
             .catch(error => {

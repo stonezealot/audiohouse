@@ -14,6 +14,7 @@ import ProductScreen from '../screens/ProductScreen'
 import SearchScreen from '../screens/SearchScreen'
 import LoginScreen from '../screens/LoginScreen'
 import RegisterScreen from '../screens/RegisterScreen'
+import UserScreen from '../screens/UserScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -62,6 +63,12 @@ export default createAppContainer(createStackNavigator({
   ProductCart: {
     screen: CartScreen,
     navigationOptions: {
+      header: null,
+    }
+  },
+  User:{
+     screen:UserScreen,
+     navigationOptions: {
       header: null,
     }
   }

@@ -19,7 +19,8 @@ import { SecureStore } from "../storage";
 import { cal } from '../components/common';
 
 var { height, width } = Dimensions.get('window');
-export default class RegisterScreen extends React.Component {
+
+export default class UserScreen extends React.Component {
 
     static navigationOptions = {
     };
@@ -27,35 +28,68 @@ export default class RegisterScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: this.props.navigation.getParam('serviceEntry'),
+            serviceEntry: '',
+            home: '',
+            customer: '',
             name: '',
-            pwd: '',
-            comfirmPwd: '',
             email: '',
             phone: '',
-            postalCode: '',
+            postalcode: '',
             unitNo: '',
             address: '',
             log: ''
-        }
-        this.handleRegisterButton = this.handleRegisterButton.bind(this);
+        };
+        navigation = this.props.navigation;
+        this.getStorage = this.getStorage.bind(this);
+        this.handleUpdateButton = this.handleUpdateButton.bind(this);
     }
 
+    getStorage = async () => {
+        console.log('getStorage mobile');
+        let home = await SecureStore.getItemAsync('home');
+        let serviceEntry = await SecureStore.getItemAsync('serviceEntry');
+        return this.setState({
+            home: JSON.parse(home),
+            serviceEntry: serviceEntry
+        }, () => {
+            const { home, serviceEntry } = this.state;
+            //get customer
+            console.log('get customer')
+            let url = serviceEntry + 'api/customer/'
+            let params = new URLSearchParams();
+            params.append('custId', home.custId);
+            params.append('orgId', 'A01');
+            url += ('?' + params);
+            fetch(url, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    this.setState({
+                        customer: response[0],
+                        name: response[0].name,
+                        email: response[0].emailAddr,
+                        phone: response[0].phone,
+                        postalcode: response[0].postalcode,
+                        unitNo: response[0].address2,
+                        address: response[0].address1
+                    })
+                })
+        })
 
-    handleRegisterButton() {
-        console.log('Register button pressed');
-        const { name, pwd, comfirmPwd, email, phone, postalCode, unitNo, address, serviceEntry, log } = this.state;
-        console.log("name=" + name + " pwd=" + pwd + " email=" + email + " phone=" + phone + " postalCode=" + postalCode);
+    }
+
+    componentDidMount() {
+        this.getStorage();
+    }
+
+    handleUpdateButton() {
+        const { name, email, phone, postalcode, unitNo, address, serviceEntry, customer, log } = this.state
+        console.log(name + '  ' + email + '  ' + phone + '  ' + postalcode + '  ' + unitNo + '  ' + address)
 
         if (name == '' || name.toString().trim().length == 0) {
             console.log('Please input your name');
             this.setState({ log: 'Please input your name' })
-        } else if (pwd == '') {
-            console.log('Please input your password');
-            this.setState({ log: 'Please input your password' })
-        } else if (pwd !== comfirmPwd) {
-            console.log('Please check your password');
-            this.setState({ log: 'Please check your password' })
         } else if (email == '' || email.toString().trim().length == 0) {
             console.log('Please input your email');
             this.setState({ log: 'Please input your email' })
@@ -63,23 +97,17 @@ export default class RegisterScreen extends React.Component {
             console.log('Please input your phone');
             this.setState({ log: 'Please input your phone' })
         } else {
-            let url = serviceEntry + 'api/register';
+            let url = serviceEntry + 'api/customer/' + customer.recKey + '/update';
             const body = {
+                custId: customer.custId,
                 orgId: "A01",
-                firstName: name,
-                lastName: "",
+                custName: name,
                 email: email,
                 phone: phone,
-                pwd: pwd,
                 addr1: address,
                 addr2: unitNo,
-                addr3: "",
-                city: "",
-                country: "",
-                postalcode: postalCode,
-                ecshopId: "AUDIOHOUSE",
-                guestRecKey: ""
-            };
+                postalcode: postalcode
+            }
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -98,8 +126,7 @@ export default class RegisterScreen extends React.Component {
                     }
                 })
                 .then(() => {
-                    console.log('Register successfully');
-                    navigation.navigate('Login');
+                    console.log('Update successfully');
                 })
                 .catch(error => {
                     if (error) {
@@ -107,25 +134,21 @@ export default class RegisterScreen extends React.Component {
                         console.log('no success', error);
                     }
                     this.setState({
-                        log: 'Register failed',
+                        log: 'Update failed',
                     });
                 })
-
         }
     }
 
-
     render() {
-
-        const { name, pwd, comfirmPwd, email, phone, postalCode, unitNo, address, log } = this.state
+        const { name, email, phone, postalcode, unitNo, address, customer, log } = this.state
 
         return (
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
-                behavior='padding'
-            >
+                behavior='padding'>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Register</Text>
+                    <Text style={styles.title}>User</Text>
                 </View>
                 <ScrollView style={styles.container}>
                     <View style={styles.subtitleContainer}>
@@ -136,33 +159,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Name'
-                            onSubmitEditing={() => { this.passwordTextInput.focus(); }}
+                            defaultValue={customer.name}
                             onChangeText={(name) => { this.setState({ name }) }}
-                            value={name}
-                        />
-                    </View>
-                    <View style={styles.combineView}>
-                        <Image style={styles.icon} source={require('../image/password.png')}></Image>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder='Password'
-                            ref={(input) => { this.passwordTextInput = input; }}
-                            onSubmitEditing={() => { this.comfirmTextInput.focus(); }}
-                            onChangeText={(pwd) => { this.setState({ pwd }) }}
-                            value={pwd}
-                            secureTextEntry={true}
-                        />
-                    </View>
-                    <View style={styles.combineView}>
-                        <Image style={styles.icon} source={require('../image/password.png')}></Image>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder='Confirm Password'
-                            ref={(input) => { this.comfirmTextInput = input; }}
-                            onSubmitEditing={() => { this.emailTextInput.focus(); }}
-                            onChangeText={(comfirmPwd) => { this.setState({ comfirmPwd }) }}
-                            value={comfirmPwd}
-                            secureTextEntry={true}
                         />
                     </View>
                     <View style={styles.combineView}>
@@ -170,10 +168,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Email'
-                            ref={(input) => { this.emailTextInput = input; }}
-                            onSubmitEditing={() => { this.phoneTextInput.focus(); }}
+                            defaultValue={customer.emailAddr}
                             onChangeText={(email) => { this.setState({ email }) }}
-                            value={email}
                         />
                     </View>
                     <View style={styles.combineView}>
@@ -181,10 +177,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Phone'
-                            ref={(input) => { this.phoneTextInput = input; }}
-                            onSubmitEditing={() => { this.postalCodeTextInput.focus(); }}
+                            defaultValue={customer.phone}
                             onChangeText={(phone) => { this.setState({ phone }) }}
-                            value={phone}
                         />
                     </View>
                     <View style={styles.subtitleContainer}>
@@ -195,10 +189,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Postal Code'
-                            ref={(input) => { this.postalCodeTextInput = input; }}
-                            onSubmitEditing={() => { this.unitTextInput.focus(); }}
-                            onChangeText={(postalCode) => { this.setState({ postalCode }) }}
-                            value={postalCode}
+                            defaultValue={customer.postalcode}
+                            onChangeText={(postalcode) => { this.setState({ postalcode }) }}
                         />
                     </View>
                     <View style={styles.combineView}>
@@ -206,10 +198,8 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Unit No.'
-                            ref={(input) => { this.unitTextInput = input; }}
-                            onSubmitEditing={() => { this.addressTextInput.focus(); }}
+                            defaultValue={customer.address2}
                             onChangeText={(unitNo) => { this.setState({ unitNo }) }}
-                            value={unitNo}
                         />
                     </View>
                     <View style={styles.combineView}>
@@ -217,15 +207,14 @@ export default class RegisterScreen extends React.Component {
                         <TextInput
                             style={styles.textInput}
                             placeholder='Address'
-                            ref={(input) => { this.addressTextInput = input; }}
+                            defaultValue={customer.address1}
                             onChangeText={(address) => { this.setState({ address }) }}
-                            value={address}
                         />
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.registerButton}
-                            onPress={this.handleRegisterButton}>
-                            <Text style={styles.registerText}>Register</Text>
+                        <TouchableOpacity style={styles.updateButton}
+                            onPress={this.handleUpdateButton}>
+                            <Text style={styles.updateText}>Update</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{
@@ -235,10 +224,11 @@ export default class RegisterScreen extends React.Component {
                         <Text style={styles.logText}>{log || null}</Text>
                     </View>
                 </ScrollView>
+
             </KeyboardAvoidingView>
         )
-
     }
+
 }
 
 const styles = StyleSheet.create({
@@ -263,6 +253,7 @@ const styles = StyleSheet.create({
         fontWeight: ('regular', '600'),
         fontFamily: 'pledg',
         textAlign: 'center',
+        width: 200
     },
     subtitleContainer: {
         marginTop: 20,
@@ -313,7 +304,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
     },
-    registerButton: {
+    buttonContainer: {
+        marginTop: 30,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    updateButton: {
         height: 40,
         width: width * 1.9 / 5,
         borderRadius: 10,
@@ -322,7 +318,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         alignItems: 'center',
     },
-    registerText: {
+    updateText: {
         fontSize: 18,
         color: 'white',
         fontWeight: ('bold', '600'),
@@ -333,4 +329,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'red'
     }
+
 })
