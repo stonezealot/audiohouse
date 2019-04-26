@@ -125,9 +125,6 @@ export default class UserScreen extends React.Component {
                         return response.json();
                     }
                 })
-                .then(() => {
-                    console.log('Update successfully');
-                })
                 .catch(error => {
                     if (error) {
                         // prompt

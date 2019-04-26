@@ -15,6 +15,7 @@ import SearchScreen from '../screens/SearchScreen'
 import LoginScreen from '../screens/LoginScreen'
 import RegisterScreen from '../screens/RegisterScreen'
 import UserScreen from '../screens/UserScreen'
+import AccountScreen from '../screens/AccountScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -28,14 +29,14 @@ export default createAppContainer(createStackNavigator({
       header: null
     },
   },
-  Login:{
+  Login: {
     screen: LoginScreen,
     navigationOptions: {
       header: null,
       gesturesEnabled: false
     },
   },
-  Register:{
+  Register: {
     screen: RegisterScreen,
     navigationOptions: {
       header: null,
@@ -66,9 +67,15 @@ export default createAppContainer(createStackNavigator({
       header: null,
     }
   },
-  User:{
-     screen:UserScreen,
-     navigationOptions: {
+  User: {
+    screen: UserScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Account: {
+    screen: AccountScreen,
+    navigationOptions: {
       header: null,
     }
   }

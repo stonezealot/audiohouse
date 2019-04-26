@@ -33,12 +33,12 @@ export default class MyselfScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress = {() => navigation.navigate('User')}>
+        <TouchableOpacity onPress={() => navigation.navigate('User')}>
           <View style={styles.optionsContainer}>
             <Text>User Information</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Account')}>
           <View style={styles.optionsContainer}>
             <Text>Account</Text>
           </View>
@@ -65,7 +65,6 @@ export default class MyselfScreen extends React.Component {
         </TouchableOpacity>
       </View>
     )
-
   }
 }
 
@@ -74,11 +73,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EEEEEE',
   },
-  optionsContainer:{
-    height:100,
-    width:width,
-    marginTop:20,
-    backgroundColor:'white',
+  optionsContainer: {
+    height: 100,
+    width: width,
+    marginTop: 20,
+    backgroundColor: 'white',
     justifyContent: 'center',
   }
 })
