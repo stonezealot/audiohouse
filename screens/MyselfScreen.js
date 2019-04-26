@@ -48,7 +48,7 @@ export default class MyselfScreen extends React.Component {
             <Text>My orders</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Bookmark')}>
           <View style={styles.optionsContainer}>
             <Text>Bookmarks</Text>
           </View>

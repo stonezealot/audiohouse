@@ -16,6 +16,7 @@ import LoginScreen from '../screens/LoginScreen'
 import RegisterScreen from '../screens/RegisterScreen'
 import UserScreen from '../screens/UserScreen'
 import AccountScreen from '../screens/AccountScreen'
+import BookmarkScreen from '../screens/BookmarkScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -75,6 +76,12 @@ export default createAppContainer(createStackNavigator({
   },
   Account: {
     screen: AccountScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Bookmark: {
+    screen: BookmarkScreen,
     navigationOptions: {
       header: null,
     }
