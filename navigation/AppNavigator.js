@@ -17,6 +17,7 @@ import RegisterScreen from '../screens/RegisterScreen'
 import UserScreen from '../screens/UserScreen'
 import AccountScreen from '../screens/AccountScreen'
 import BookmarkScreen from '../screens/BookmarkScreen'
+import OrderScreen from '../screens/OrderScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -85,5 +86,12 @@ export default createAppContainer(createStackNavigator({
     navigationOptions: {
       header: null,
     }
+  },
+  Order: {
+    screen: OrderScreen,
+    navigationOptions: {
+      header: null,
+    }
   }
+
 }));

@@ -32,9 +32,11 @@ export default class ProductScreen extends React.Component {
       ref8: '',
       cashcarry: 'N',
       showDeliveryModal: false,
-      showInstallationModal: false
+      showInstallationModal: false,
+      bookmarks: ''
     }
     this.addToCart = this.addToCart.bind(this);
+    this.addBookmark = this.addBookmark.bind(this);
     this.installationFlgY = this.installationFlgY.bind(this);
     this.installationFlgN = this.installationFlgN.bind(this);
     this.cashcarryY = this.cashcarryY.bind(this);
@@ -103,6 +105,39 @@ export default class ProductScreen extends React.Component {
         })
       })
 
+  }
+
+  addBookmark(stkId) {
+    const serviceEntry = this.state.serviceEntry;
+    const home = this.state.home;
+    let url = serviceEntry + 'api/add-bookmark';
+    console.log(url);
+    console.log(home.custId);
+    const body = {
+      orgId: "A01",
+      custId: home.custId,
+      ecshopId: "AUDIOHOUSE",
+      stkId: stkId
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(body),
+    })
+      .then(
+        response => {
+          if (!response.ok) {
+          } else {
+            return response.json();
+          }
+        })
+      .then(response => {
+        this.setState({
+          bookmarks: response
+        })
+      })
   }
 
   installationFlgY() {
@@ -260,7 +295,7 @@ export default class ProductScreen extends React.Component {
         </ScrollView>
         <View style={styles.bottomBtnContainer}>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.addBookmark(selectedProduct.stkId)}>
               {'1' === '1' ? <Image style={styles.bottomLeftBtn} source={require('../image/bookmark.png')} /> :
                 <Image style={styles.bottomLeftBtn} source={require('../image/bookmarked.png')} />}
             </TouchableOpacity>

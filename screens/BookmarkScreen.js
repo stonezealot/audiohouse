@@ -30,6 +30,8 @@ export default class BookmarkScreen extends React.Component {
             bookmarks: '',
         };
         navigation = this.props.navigation;
+        this.toProduct = this.toProduct.bind(this);
+        this.bookmarkDelete = this.bookmarkDelete.bind(this);
     }
 
     static navigationOptions = {
@@ -68,15 +70,83 @@ export default class BookmarkScreen extends React.Component {
         this.getStorage();
     }
 
+
+    toProduct(recKey) {
+        let url = this.state.serviceEntry + 'api/stocks/' + recKey;
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    selectedProduct: response.ecStk
+                }, () => {
+                    navigation.navigate('Product', { selectedProduct: this.state.selectedProduct })
+                })
+            })
+    }
+
+    bookmarkDelete(stkId){
+        const serviceEntry = this.state.serviceEntry;
+        const home = this.state.home;
+        let url = serviceEntry + 'api/delete-bookmark';
+        console.log(url);
+        console.log(home.custId);
+        const body = {
+          orgId: "A01",
+          custId: home.custId,
+          ecshopId: "AUDIOHOUSE",
+          stkId: stkId
+        }
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify(body),
+        })
+          .then(
+            response => {
+              if (!response.ok) {
+              } else {
+                return response.json();
+              }
+            })
+          .then(response => {
+            this.setState({
+              bookmarks: response
+            })
+          })
+    }
+
+
     _extraUniqueKey(item, index) {
         return "index" + index + item;
     }
 
     handleBookmarkMenu(item) {
 
+        const Rightbuttons = [
+            {
+              backgroundColor: 'red',
+              color: 'white',
+              text: 'Delete',
+              onPress: () => this.bookmarkDelete(item.stkId)
+            }]
+
         return (
+            <SwipeView
+        right={Rightbuttons}
+        autoClose={true}>
             <View style={styles.cartlineItemContainer}>
-                <Image style={styles.cartlineImage} />
+                <TouchableOpacity
+                    key={item.stkId}
+                    activeOpacity={0.3}
+                    onPress={() => this.toProduct(item.stkRecKey)}
+                    >
+                    <Image style={styles.cartlineImage} />
+                </TouchableOpacity>
+
                 <View>
                     <Text style={styles.cartlineName}>{item.name}</Text>
                     <View style={styles.netPriceContainer}>
@@ -87,6 +157,7 @@ export default class BookmarkScreen extends React.Component {
                 </View>
 
             </View>
+            </SwipeView>
         )
     }
 
@@ -148,7 +219,7 @@ const styles = StyleSheet.create({
     cartlineName: {
         position: 'relative',
         left: 1,
-        width: width - 145,
+        width: width - 151,
         height: 40,
         fontSize: 15,
         fontWeight: ('bold', '500'),

@@ -66,7 +66,6 @@ export default class SearchScreen extends React.Component {
                     navigation.navigate('Product', { selectedProduct: this.state.selectedProduct })
                 })
             })
-        // navigation.navigate('Product');
     }
 
     _extraUniqueKey(item, index) {

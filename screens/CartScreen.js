@@ -40,6 +40,7 @@ export default class CartScreen extends React.Component {
     this.cartlineDelete = this.cartlineDelete.bind(this);
     this.getStorage = this.getStorage.bind(this);
     this.chooseCashcarry = this.chooseCashcarry.bind(this);
+    this.toProduct = this.toProduct.bind(this);
     this.props.navigation.addListener('willFocus', () => { this.getStorage() });
   }
 
@@ -283,6 +284,21 @@ export default class CartScreen extends React.Component {
     })
   }
 
+  toProduct(recKey) {
+    let url = this.state.serviceEntry + 'api/stocks/' + recKey;
+    fetch(url, {
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          selectedProduct: response.ecStk
+        }, () => {
+          navigation.navigate('Product', { selectedProduct: this.state.selectedProduct })
+        })
+      })
+  }
+
   _extraUniqueKey(item, index) {
     return "index" + index + item;
   }
@@ -302,7 +318,17 @@ export default class CartScreen extends React.Component {
         right={Rightbuttons}
         autoClose={true}>
         <View style={styles.cartlineItemContainer}>
-          <Image style={styles.cartlineImage} />
+          <TouchableOpacity
+            key={item.stkId}
+            activeOpacity={0.3}
+            onPress={() => {
+              console.log(item.stkRecKey)
+              this.toProduct(item.stkRecKey)
+            }
+            }
+          >
+            <Image style={styles.cartlineImage} />
+          </TouchableOpacity>
           <View>
             <Text style={styles.cartlineName}>{item.name}</Text>
             <View style={{ height: 70 }}>
@@ -420,7 +446,9 @@ export default class CartScreen extends React.Component {
           </View>
           <View style={styles.checkoutBtnContainer}>
             <TouchableOpacity onPress={this.handleCheckoutButton}>
+            <View style={{height: 100,width: width * 2 / 6,justifyContent: 'center'}}>
               <Text style={styles.checkoutBtnText}>Checkout</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>

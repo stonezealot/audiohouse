@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: 'http://172.20.10.9:8080/',
+            serviceEntry: 'http://192.168.1.5:8080/',
             name: '',
             pwd: '',
             toHome: false,
@@ -62,7 +62,8 @@ export default class LoginScreen extends React.Component {
             pwd: pwd,
             ecshopId: "AUDIOHOUSE",
             guestRecKey: ""
-        };
+        }
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -73,7 +74,7 @@ export default class LoginScreen extends React.Component {
             .then(response => {
                 console.log('response', response);
                 if (!response.ok) {
-                    // throw response;
+                    throw response;
                 } else {
                     return response.json();
                 }
@@ -92,37 +93,49 @@ export default class LoginScreen extends React.Component {
                 let params = new URLSearchParams();
                 params.append('orgId', 'A01');
                 url += ('?' + params);
-                // let promiseObject = { url: url, nameString: 'stocks' };
-                // promiseArray.push(promiseObject);
-                // return Promise.all([
-                //     ...promiseArray.map(el =>
-                //         fetch(el.url)
-                //             .then(response => {
-                //                 console.log(el.nameString);
-                //                 return response.json();
-                //             })
-                //             .then(response => SecureStore.setItemAsync(el.nameString, JSON.stringify(response)))
-                //     )
-                // ]);
+                let promiseObject = { url: url, nameString: 'stocks' };
+                promiseArray.push(promiseObject);
+                return Promise.all([
+                    ...promiseArray.map(el =>
+                        fetch(el.url)
+                            .then(response => {
+                                console.log(el.nameString);
+                                return response.json();
+                            })
+                            .then(response => {
+                                console.log('fetching', el.nameString);
+                                return SecureStore.setItemAsync(el.nameString, JSON.stringify(response))
+                            })
+                    )
+                ]);
 
-                fetch(url, {
-                    method: 'GET'
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        console.log('setStocks')
-                        return SecureStore.setItemAsync('stocks', JSON.stringify(response))
-                    })
-                    // .then(()=>{
+
+
+
+                // fetch(url, {
+                //     method: 'GET'
+                // })
+                //     .then(response => response.json())
+                //     .then(response => {
+                //         console.log('setStocks')
+                //         return SecureStore.setItemAsync('stocks', JSON.stringify(response))
+                //     })
+
+
+                    
+                    // .then(() => {
+                    //     console.log('home:  ' + JSON.stringify(this.state.home));
+                    //     console.log('serviceEntry:  ' + this.state.serviceEntry);
+                    //     console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
                     //     console.log('go to Home')
                     //     navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
                     // })
             })
             .then(() => {
                 // this.setState({ toHome: true });
-                console.log('home:  ' + this.state.home);
-                console.log('serviceEntry:  ' + this.state.serviceEntry);
-                console.log('stocks:  ' + SecureStore.getItemAsync('stocks'));
+            console.log('home:  ' + JSON.stringify(this.state.home));
+            console.log('serviceEntry:  ' + this.state.serviceEntry);
+            console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
                 navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
             })
             .catch(error => {
