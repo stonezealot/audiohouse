@@ -446,8 +446,8 @@ export default class CartScreen extends React.Component {
           </View>
           <View style={styles.checkoutBtnContainer}>
             <TouchableOpacity onPress={this.handleCheckoutButton}>
-            <View style={{height: 100,width: width * 2 / 6,justifyContent: 'center'}}>
-              <Text style={styles.checkoutBtnText}>Checkout</Text>
+              <View style={{ height: 100, width: width * 2 / 6, justifyContent: 'center' }}>
+                <Text style={styles.checkoutBtnText}>Checkout</Text>
               </View>
             </TouchableOpacity>
           </View>

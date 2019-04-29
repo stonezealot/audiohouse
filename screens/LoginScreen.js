@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            serviceEntry: 'http://192.168.1.5:8080/',
+            serviceEntry: 'http://172.20.10.9:8080/',
             name: '',
             pwd: '',
             toHome: false,

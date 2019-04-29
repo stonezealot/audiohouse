@@ -70,7 +70,7 @@ export default class MyselfScreen extends React.Component {
             <Text style={styles.optionsText}>Credit</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Ewallet')}>
           <View style={styles.optionsContainer}>
             <Text style={styles.optionsText}>eWallet</Text>
           </View>

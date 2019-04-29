@@ -138,17 +138,17 @@ export default class BookmarkScreen extends React.Component {
             <SwipeView
         right={Rightbuttons}
         autoClose={true}>
-            <View style={styles.cartlineItemContainer}>
+            <View style={styles.bookmarkItemContainer}>
                 <TouchableOpacity
                     key={item.stkId}
                     activeOpacity={0.3}
                     onPress={() => this.toProduct(item.stkRecKey)}
                     >
-                    <Image style={styles.cartlineImage} />
+                    <Image style={styles.bookmarkImage} />
                 </TouchableOpacity>
 
                 <View>
-                    <Text style={styles.cartlineName}>{item.name}</Text>
+                    <Text style={styles.bookmarkName}>{item.name}</Text>
                     <View style={styles.netPriceContainer}>
                         <Text style={styles.netPrice}>${item.netPrice}</Text>
                     </View>
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         fontFamily: 'pledg',
         textAlign: 'center',
     },
-    cartlineItemContainer: {
+    bookmarkItemContainer: {
         height: 150,
         width: width,
         margin: 0.5,
@@ -210,13 +210,13 @@ const styles = StyleSheet.create({
         borderColor: '#EEEEEE',
         borderRadius: 5,
     },
-    cartlineImage: {
+    bookmarkImage: {
         height: 140,
         width: 140,
         margin: 5,
         backgroundColor: 'powderblue'
     },
-    cartlineName: {
+    bookmarkName: {
         position: 'relative',
         left: 1,
         width: width - 151,

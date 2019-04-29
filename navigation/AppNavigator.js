@@ -18,6 +18,7 @@ import UserScreen from '../screens/UserScreen'
 import AccountScreen from '../screens/AccountScreen'
 import BookmarkScreen from '../screens/BookmarkScreen'
 import OrderScreen from '../screens/OrderScreen'
+import EwalletScreen from '../screens/EwalletScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -89,6 +90,12 @@ export default createAppContainer(createStackNavigator({
   },
   Order: {
     screen: OrderScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Ewallet: {
+    screen: EwalletScreen,
     navigationOptions: {
       header: null,
     }
