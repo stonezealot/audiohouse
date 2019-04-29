@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     bookmarkName: {
         position: 'relative',
         left: 1,
-        width: width - 151,
+        width: width - 160,
         height: 40,
         fontSize: 15,
         fontWeight: ('bold', '500'),

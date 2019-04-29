@@ -539,7 +539,7 @@ const styles = StyleSheet.create({
   cartlineName: {
     position: 'relative',
     left: 1,
-    width: width - 145,
+    width: width - 160,
     height: 40,
     fontSize: 15,
     fontWeight: ('bold', '500'),
@@ -562,7 +562,7 @@ const styles = StyleSheet.create({
   choiceText: {
     marginTop: 4,
     marginLeft: 10,
-    width: width,
+    width: width-190,
     height: 20,
     fontSize: 15,
     color: '#8a8a8a',

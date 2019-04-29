@@ -20,15 +20,15 @@ import moment from 'moment';
 
 var { height, width } = Dimensions.get('window');
 
-export default class EwalletScreen extends React.Component {
+export default class CreditScreen extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             serviceEntry: '',
             home: '',
-            ewallets: '',
-            ewalletDtls: ''
+            credits: '',
+            creditDtls: ''
         };
         navigation = this.props.navigation;
     }
@@ -49,7 +49,7 @@ export default class EwalletScreen extends React.Component {
             const { home, serviceEntry } = this.state;
             //get bookmarks
             console.log('get ewallets')
-            let url = serviceEntry + 'api/ewallets/'
+            let url = serviceEntry + 'api/credits/'
             let params = new URLSearchParams();
             console.log('serviceEntry:  ' + serviceEntry);
             console.log('custId:  ' + home.custId)
@@ -61,10 +61,10 @@ export default class EwalletScreen extends React.Component {
             })
                 .then(response => response.json())
                 .then(response => {
-                    this.setState({ ewallets: response[0] })
+                    this.setState({ credits: response[0] })
                 })
 
-            url = serviceEntry + 'api/ewallet-details/'
+            url = serviceEntry + 'api/credit-details/'
             params = new URLSearchParams();
             console.log('serviceEntry:  ' + serviceEntry);
             console.log('custId:  ' + home.custId)
@@ -76,7 +76,7 @@ export default class EwalletScreen extends React.Component {
             })
                 .then(response => response.json())
                 .then(response => {
-                    this.setState({ ewalletDtls: response })
+                    this.setState({ creditDtls: response })
                 })
         })
     }
@@ -89,38 +89,38 @@ export default class EwalletScreen extends React.Component {
         return "index" + index + item;
     }
 
-    handleEwalletDtlMenu(item) {
+    handleCreditDtlMenu(item) {
         return (
             <View>
                 <View style={styles.ewalletItemContainer}>
                     <Text style={styles.dateText}>{moment(item.srcDocDate).format("YYYY-MM-DD")}</Text>
                     <Text style={styles.depositText}>
-                        {item.type == 'A'
+                        {item.ppType == 'A'
                             ?
-                            (item.ewalletAmt < 0
+                            (item.ppAmt < 0
                                 ?
                                 null
                                 :
-                                '$' + item.ewalletAmt)
+                                '$' + item.ppAmt)
                             :
-                            (item.ewalletAmt < 0
+                            (item.ppAmt < 0
                                 ?
                                 null
                                 :
-                                '$' + item.ewalletAmt)}
+                                '$' + item.ppAmt)}
                     </Text>
                     <Text style={styles.withdrawalText}>
-                        {item.type == 'A'
+                        {item.ppType == 'A'
                             ?
-                            (item.ewalletAmt < 0
+                            (item.ppAmt < 0
                                 ?
-                                '$' + (-item.ewalletAmt)
+                                '$' + (-item.ppAmt)
                                 :
                                 null)
                             :
-                            (item.ewalletAmt < 0
+                            (item.ppAmt < 0
                                 ?
-                                '$' + (-item.ewalletAmt)
+                                '$' + (-item.ppAmt)
                                 :
                                 null)}
                     </Text>
@@ -137,15 +137,15 @@ export default class EwalletScreen extends React.Component {
 
 
     render() {
-        const { ewallets } = this.state
+        const { credits } = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Ewallet</Text>
+                    <Text style={styles.title}>Credit</Text>
                 </View>
                 <View style={styles.header}>
                     {/* <Text style={styles.headerTitle}>{ewallets.ewalletAmt}</Text> */}
-                    <Text style={styles.headerText}>${ewallets.ewalletAmt}</Text>
+                    <Text style={styles.headerText}>${credits.balAmt}</Text>
                 </View>
                 <View style={styles.headerContainer}>
                     <Text style={styles.dateHeader}>Date</Text>
@@ -155,8 +155,8 @@ export default class EwalletScreen extends React.Component {
                 <FlatList style={{ flex: 1 }}
                     extraData={this.state}
                     keyExtractor={this._extraUniqueKey}
-                    data={this.state.ewalletDtls}
-                    renderItem={({ item }) => this.handleEwalletDtlMenu(item)} />
+                    data={this.state.creditDtls}
+                    renderItem={({ item }) => this.handleCreditDtlMenu(item)} />
             </View>
         )
     }
