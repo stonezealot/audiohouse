@@ -20,6 +20,7 @@ import BookmarkScreen from '../screens/BookmarkScreen'
 import OrderScreen from '../screens/OrderScreen'
 import EwalletScreen from '../screens/EwalletScreen'
 import CreditScreen from '../screens/CreditScreen'
+import CheckoutDeliveryScreen from '../screens/CheckoutDeliveryScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -103,6 +104,12 @@ export default createAppContainer(createStackNavigator({
   },
   Credit: {
     screen: CreditScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  CheckoutDelivery: {
+    screen: CheckoutDeliveryScreen,
     navigationOptions: {
       header: null,
     }

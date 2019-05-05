@@ -31,6 +31,7 @@ export default class OrderScreen extends React.Component {
         };
         navigation = this.props.navigation;
     }
+    
     static navigationOptions = {
         header: null,
     };

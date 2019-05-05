@@ -99,9 +99,35 @@ export default class CartScreen extends React.Component {
   }
 
   handleCheckoutButton() {
-    this.setState({
-      cartlines: this.state.cartlines
+    const serviceEntry = this.state.serviceEntry
+    const home = this.state.home;
+    let url = serviceEntry + 'api/checkout'
+    console.log(url)
+    const body = {
+      orgId: "A01",
+      custId: home.custId,
+      ecshopId: "AUDIOHOUSE"
+    }
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(body),
     })
+      .then(
+        response => {
+          if (!response.ok) {
+          } else {
+            return response.json();
+          }
+        })
+      .then(() => {
+        console.log('checkout')
+        navigation.navigate('CheckoutDelivery')
+      }
+
+      )
   }
 
   qtyPlus(recKey) {
@@ -562,7 +588,7 @@ const styles = StyleSheet.create({
   choiceText: {
     marginTop: 4,
     marginLeft: 10,
-    width: width-190,
+    width: width - 190,
     height: 20,
     fontSize: 15,
     color: '#8a8a8a',
