@@ -21,6 +21,7 @@ import OrderScreen from '../screens/OrderScreen'
 import EwalletScreen from '../screens/EwalletScreen'
 import CreditScreen from '../screens/CreditScreen'
 import CheckoutDeliveryScreen from '../screens/CheckoutDeliveryScreen'
+import CheckoutBillingScreen from '../screens/CheckoutBillingScreen'
 
 import MainTabNavigator from './MainTabNavigator';
 import StackViewStyleInterpolator from 'react-navigation-stack/src/views/StackView/StackViewStyleInterpolator';
@@ -113,6 +114,11 @@ export default createAppContainer(createStackNavigator({
     navigationOptions: {
       header: null,
     }
+  },
+  CheckoutBilling: {
+    screen: CheckoutBillingScreen,
+    navigationOptions: {
+      header: null,
+    }
   }
-
 }));

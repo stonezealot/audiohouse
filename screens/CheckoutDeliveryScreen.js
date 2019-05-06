@@ -12,7 +12,7 @@ import {
     FlatList,
     TextInput,
     DeviceEventEmitter
-} from 'react-native';
+} from 'react-native';  
 import { SecureStore } from "../storage";
 import URLSearchParams from 'url-search-params';
 import SwipeView from 'react-native-swipeout';
@@ -178,7 +178,7 @@ export default class CheckoutDeliveryScreen extends React.Component {
                 })
             .then(() => {
                 console.log('checkout delivery')
-                // navigation.navigate('CheckoutDelivery')
+                navigation.navigate('CheckoutBilling')
             })
     }
 
