@@ -10,25 +10,25 @@ export default class App extends React.Component {
     isLoadingComplete: false,
   };
 
-render() {
-  if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={this._loadResourcesAsync}
-        onError={this._handleLoadingError}
-        onFinish={this._handleFinishLoading}
-      />
-    );
-  } else {
-    return (  
+  render() {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      );
+    } else {
+      return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
         </View>
 
-    );
+      );
+    }
   }
-}
 
   _loadResourcesAsync = async () => {
     return Promise.all([
@@ -44,8 +44,10 @@ render() {
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         'rogue-hero': require('./assets/fonts/Rogue-Hero-Expanded-Italic.ttf'),
         'Bitsumishi': require('./assets/fonts/Bitsumishi.ttf'),
-        'pledg':require('./assets/fonts/PLEDG-KI.ttf'),
-        'univiapro':require('./assets/fonts/univiapro-bold.otf')
+        'pledg': require('./assets/fonts/PLEDG-KI.ttf'),
+        'univiapro': require('./assets/fonts/univiapro-bold.otf'),
+        'strasua': require('./assets/fonts/Strasua.ttf'),
+        'ronaldo': require('./assets/fonts/Ronaldo.ttf'),
       }),
     ]);
   };

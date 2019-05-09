@@ -28,7 +28,7 @@ export default class EwalletScreen extends React.Component {
             serviceEntry: '',
             home: '',
             ewallets: '',
-            ewalletDtls: ''
+            ewalletDtls: '',
         };
         navigation = this.props.navigation;
     }
@@ -91,7 +91,12 @@ export default class EwalletScreen extends React.Component {
 
     handleEwalletDtlMenu(item) {
         return (
-            <View>
+            <View style={{ marginBottom: 5, alignItems: 'center' }}>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.dateHeader}>Date</Text>
+                    <Text style={styles.depositHeader}>Deposit</Text>
+                    <Text style={styles.withdrawalHeader}>Withdrawal</Text>
+                </View>
                 <View style={styles.ewalletItemContainer}>
                     <Text style={styles.dateText}>{moment(item.srcDocDate).format("YYYY-MM-DD")}</Text>
                     <Text style={styles.depositText}>
@@ -125,11 +130,10 @@ export default class EwalletScreen extends React.Component {
                                 null)}
                     </Text>
                 </View>
-                <View style={{ height: 30, backgroundColor: 'white', flexDirection: 'row' }}>
-                    <Text>Order Ref.   </Text>
-                    <Text>{item.srcDocId}</Text>
+                <View style={styles.orderRefContainer}>
+                    <Text style={styles.orderRefTitle}>Order Ref.   </Text>
+                    <Text style={styles.orderRefId}>{item.srcDocId}</Text>
                 </View>
-
             </View>
         )
     }
@@ -143,14 +147,10 @@ export default class EwalletScreen extends React.Component {
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Ewallet</Text>
                 </View>
-                <View style={styles.header}>
-                    {/* <Text style={styles.headerTitle}>{ewallets.ewalletAmt}</Text> */}
-                    <Text style={styles.headerText}>${ewallets.ewalletAmt}</Text>
-                </View>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.dateHeader}>Date</Text>
-                    <Text style={styles.depositHeader}>Deposit</Text>
-                    <Text style={styles.withdrawalHeader}>Withdrawal</Text>
+                <View style={{ alignItems: 'center' }}>
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>$ {ewallets.ewalletAmt}</Text>
+                    </View>
                 </View>
                 <FlatList style={{ flex: 1 }}
                     extraData={this.state}
@@ -171,11 +171,11 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         height: 64,
-        backgroundColor: 'white',
+        backgroundColor: '#EEEEEE',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderColor: '#D5D5D5'
+        borderColor: '#EEEEEE'
     },
     title: {
         color: 'black',
@@ -183,35 +183,43 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),
-        fontFamily: 'pledg',
+        fontFamily: 'ronaldo',
         textAlign: 'center',
     },
     header: {
+        width: width - 20,
         height: 150,
-        backgroundColor: 'white',
+        backgroundColor: '#FFC408',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10,
+        marginBottom: 5
     },
     headerContainer: {
+        width: width - 20,
         flexDirection: 'row',
         height: 30,
         borderBottomWidth: 1,
-        borderColor: 'gray'
+        borderColor: '#EEEEEE',
     },
     headerText: {
         fontSize: 40,
-        fontWeight: ('bold', '700')
+        fontWeight: ('bold', '700'),
+        color: 'white',
+        fontFamily: 'strasua',
     },
     ewalletItemContainer: {
+        width: width - 20,
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderColor: '#EEEEEE',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     dateHeader: {
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -219,6 +227,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -226,6 +235,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -246,5 +256,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         fontWeight: ('normal', '100')
+    },
+    orderRefContainer: {
+        height: 30,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        width: width - 20,
+        alignItems: 'center'
+    },
+    orderRefTitle: {
+        marginLeft: 10,
+        color: 'gray'
+    },
+    orderRefId: {
+        color: 'gray'
     }
 })

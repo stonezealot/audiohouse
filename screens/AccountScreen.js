@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),
-        fontFamily: 'pledg',
+        fontFamily: 'ronaldo',
         textAlign: 'center',
         width: 200
     },

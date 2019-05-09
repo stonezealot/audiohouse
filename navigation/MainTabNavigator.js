@@ -20,7 +20,7 @@ const HomeStack = createStackNavigator({
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarOptions: {
-    activeTintColor: '#FF1C64',
+    activeTintColor: '#EE113D',
   },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
@@ -40,7 +40,7 @@ const CartStack = createStackNavigator({
 CartStack.navigationOptions = {
   tabBarLabel: 'Cart',
   tabBarOptions: {
-    activeTintColor: '#FF1C64',
+    activeTintColor: '#EE113D',
   },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon
@@ -59,7 +59,7 @@ const MyselfStack = createStackNavigator({
 MyselfStack.navigationOptions = {
   tabBarLabel: 'Myself',
   tabBarOptions: {
-    activeTintColor: '#FF1C64',
+    activeTintColor: '#EE113D',
   },
   tabBarIcon: ({ focused, tintColor }) => (
     <TabBarIcon

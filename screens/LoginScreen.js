@@ -122,20 +122,20 @@ export default class LoginScreen extends React.Component {
                 //     })
 
 
-                    
-                    // .then(() => {
-                    //     console.log('home:  ' + JSON.stringify(this.state.home));
-                    //     console.log('serviceEntry:  ' + this.state.serviceEntry);
-                    //     console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
-                    //     console.log('go to Home')
-                    //     navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
-                    // })
+
+                // .then(() => {
+                //     console.log('home:  ' + JSON.stringify(this.state.home));
+                //     console.log('serviceEntry:  ' + this.state.serviceEntry);
+                //     console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
+                //     console.log('go to Home')
+                //     navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
+                // })
             })
             .then(() => {
                 // this.setState({ toHome: true });
-            console.log('home:  ' + JSON.stringify(this.state.home));
-            console.log('serviceEntry:  ' + this.state.serviceEntry);
-            console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
+                console.log('home:  ' + JSON.stringify(this.state.home));
+                console.log('serviceEntry:  ' + this.state.serviceEntry);
+                console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
                 navigation.navigate('Home', { serviceEntry: this.state.serviceEntry, home: this.state.home })
             })
             .catch(error => {

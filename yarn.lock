@@ -5947,6 +5947,13 @@ react-native-select-dialog@^1.2.0:
   resolved "https://registry.yarnpkg.com/react-native-select-dialog/-/react-native-select-dialog-1.2.0.tgz#c8564374c8429ac6ccf1228de2c7c93678324083"
   integrity sha1-yFZDdMhCmsbM8SKN4sfJNngyQIM=
 
+react-native-side-menu@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-1.1.3.tgz#6ef5d2232ecf718312df6cedef019148bac3073a"
+  integrity sha1-bvXSIy7PcYMS32zt7wGRSLrDBzo=
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-status-bar-height@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.3.1.tgz#b92ce9112c2367290847ac11284d9d84a6330169"

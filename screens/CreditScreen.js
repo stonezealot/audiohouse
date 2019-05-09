@@ -28,7 +28,7 @@ export default class CreditScreen extends React.Component {
             serviceEntry: '',
             home: '',
             credits: '',
-            creditDtls: ''
+            creditDtls: '',
         };
         navigation = this.props.navigation;
     }
@@ -47,8 +47,8 @@ export default class CreditScreen extends React.Component {
             serviceEntry: serviceEntry
         }, () => {
             const { home, serviceEntry } = this.state;
-            //get bookmarks
-            console.log('get ewallets')
+            //get credits
+            console.log('get credits')
             let url = serviceEntry + 'api/credits/'
             let params = new URLSearchParams();
             console.log('serviceEntry:  ' + serviceEntry);
@@ -64,6 +64,8 @@ export default class CreditScreen extends React.Component {
                     this.setState({ credits: response[0] })
                 })
 
+            //get credit-details
+            console.log('get credit-details')
             url = serviceEntry + 'api/credit-details/'
             params = new URLSearchParams();
             console.log('serviceEntry:  ' + serviceEntry);
@@ -91,8 +93,14 @@ export default class CreditScreen extends React.Component {
 
     handleCreditDtlMenu(item) {
         return (
-            <View>
-                <View style={styles.ewalletItemContainer}>
+            <View style={{ marginBottom: 5, alignItems: 'center' }}>
+
+                <View style={styles.headerContainer}>
+                    <Text style={styles.dateHeader}>Date</Text>
+                    <Text style={styles.depositHeader}>Deposit</Text>
+                    <Text style={styles.withdrawalHeader}>Withdrawal</Text>
+                </View>
+                <View style={styles.creditItemContainer}>
                     <Text style={styles.dateText}>{moment(item.srcDocDate).format("YYYY-MM-DD")}</Text>
                     <Text style={styles.depositText}>
                         {item.ppType == 'A'
@@ -125,11 +133,10 @@ export default class CreditScreen extends React.Component {
                                 null)}
                     </Text>
                 </View>
-                <View style={{ height: 30, backgroundColor: 'white', flexDirection: 'row' }}>
-                    <Text>Order Ref.   </Text>
-                    <Text>{item.srcDocId}</Text>
+                <View style={styles.orderRefContainer}>
+                    <Text style={styles.orderRefTitle}>Order Ref.   </Text>
+                    <Text style={styles.orderRefId}>{item.srcDocId}</Text>
                 </View>
-
             </View>
         )
     }
@@ -137,26 +144,27 @@ export default class CreditScreen extends React.Component {
 
 
     render() {
-        const { credits } = this.state
+        const { credits, isnull } = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Credit</Text>
                 </View>
-                <View style={styles.header}>
-                    {/* <Text style={styles.headerTitle}>{ewallets.ewalletAmt}</Text> */}
-                    <Text style={styles.headerText}>${credits.balAmt}</Text>
+
+                <View>
+                    <View style={{ alignItems: 'center' }}>
+                        <View style={styles.header}>
+                            <Text style={styles.headerText}>{credits == undefined ? '$ 0' : '$ ' + credits.balAmt} </Text>
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.headerContainer}>
-                    <Text style={styles.dateHeader}>Date</Text>
-                    <Text style={styles.depositHeader}>Deposit</Text>
-                    <Text style={styles.withdrawalHeader}>Withdrawal</Text>
-                </View>
+
                 <FlatList style={{ flex: 1 }}
                     extraData={this.state}
                     keyExtractor={this._extraUniqueKey}
                     data={this.state.creditDtls}
                     renderItem={({ item }) => this.handleCreditDtlMenu(item)} />
+
             </View>
         )
     }
@@ -171,11 +179,11 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         height: 64,
-        backgroundColor: 'white',
+        backgroundColor: '#EEEEEE',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
-        borderColor: '#D5D5D5'
+        borderColor: '#EEEEEE'
     },
     title: {
         color: 'black',
@@ -183,35 +191,43 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),
-        fontFamily: 'pledg',
+        fontFamily: 'ronaldo',
         textAlign: 'center',
     },
     header: {
+        width: width - 20,
         height: 150,
-        backgroundColor: 'white',
+        backgroundColor: '#4DB34D',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10,
+        marginBottom: 5
     },
     headerContainer: {
+        width: width - 20,
         flexDirection: 'row',
         height: 30,
         borderBottomWidth: 1,
-        borderColor: 'gray'
+        borderColor: '#EEEEEE',
     },
     headerText: {
         fontSize: 40,
-        fontWeight: ('bold', '700')
+        fontWeight: ('bold', '700'),
+        color: 'white',
+        fontFamily: 'strasua',
     },
-    ewalletItemContainer: {
+    creditItemContainer: {
+        width: width - 20,
         backgroundColor: 'white',
         borderBottomWidth: 1,
         borderColor: '#EEEEEE',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     dateHeader: {
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -219,6 +235,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -226,6 +243,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         backgroundColor: 'white',
+        color: 'gray',
         fontSize: 20,
         fontWeight: ('bold', '300')
     },
@@ -246,5 +264,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         fontWeight: ('normal', '100')
+    },
+    orderRefContainer: {
+        height: 30,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        width: width - 20,
+        alignItems: 'center'
+    },
+    orderRefTitle: {
+        marginLeft: 10,
+        color: 'gray'
+    },
+    orderRefId: {
+        color: 'gray'
     }
 })

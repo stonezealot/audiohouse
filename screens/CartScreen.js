@@ -353,7 +353,7 @@ export default class CartScreen extends React.Component {
             }
             }
           >
-            <Image style={styles.cartlineImage} />
+            <Image style={styles.cartlineImage} source={require('../image/product.png')} />
           </TouchableOpacity>
           <View>
             <Text style={styles.cartlineName}>{item.name}</Text>
@@ -451,23 +451,23 @@ export default class CartScreen extends React.Component {
           <View style={{ width: width * 4 / 6 }}>
             <View style={{ flexDirection: 'row', borderColor: '#D5D5D5', borderBottomWidth: 0.5 }}>
               <Text style={styles.totalText}>Total:</Text>
-              <Text style={styles.totalAmountText}>${carts.subTotal}</Text>
+              <Text style={styles.totalAmountText}>{carts == undefined ? '$0' : '$' + carts.subTotal}</Text>
             </View>
             <View style={{ flexDirection: 'row', borderColor: '#D5D5D5', borderBottomWidth: 0.5 }}>
               <Text style={styles.totalText}>Delivery:</Text>
-              <Text style={styles.totalAmountText}>${carts.deliveryCharge}</Text>
+              <Text style={styles.totalAmountText}>{carts == undefined ? '$0' : '$' + carts.deliveryCharge}</Text>
             </View>
             <View style={{ flexDirection: 'row', borderColor: '#D5D5D5', borderBottomWidth: 0.5 }}>
               <Text style={styles.totalText}>Installation:</Text>
-              <Text style={styles.totalAmountText}>${carts.installationCharge}</Text>
+              <Text style={styles.totalAmountText}>{carts == undefined ? '$0' : '$' + carts.installationCharge}</Text>
             </View>
             <View style={{ flexDirection: 'row', borderColor: '#D5D5D5', borderBottomWidth: 0.5 }}>
               <Text style={styles.totalText}>Grand Total:</Text>
-              <Text style={[styles.totalAmountText, { fontWeight: ('bold', '600') }]}>${carts.grandTotal}</Text>
+              <Text style={[styles.totalAmountText, { fontWeight: ('bold', '600') }]}>{carts == undefined ? '$0' : '$' + carts.grandTotal}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.gainText}>Cash Vouchers for members:</Text>
-              <Text style={styles.gainAmountText}>${carts.evoucherGain}</Text>
+              <Text style={styles.gainAmountText}>{carts == undefined ? '$0' : '$' + carts.evoucherGain}</Text>
             </View>
           </View>
           <View style={styles.checkoutBtnContainer}>
@@ -479,42 +479,70 @@ export default class CartScreen extends React.Component {
           </View>
         </View>
         <Modal
-          animationType='slide'
+          animationType='fade'
           visible={this.state.showCashcarryModal}
           transparent={true}
           ref={"modal"}>
+          <TouchableOpacity onPress={() => this.setState({ showCashcarryModal: false })} activeOpacity={1}>
+            <Image style={{ backgroundColor: 'black', height: height - 200, width: width, opacity: 0.3 }} />
+          </TouchableOpacity>
           <View style={styles.deliveryChoiceModal}>
-            {this.state.cartlineItem.ref8 == 0
-              ?
-              <TouchableOpacity onPress={() => this.chooseCashcarry(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "N")}>
-                <Text style={styles.modalItem}>Free Of Charge</Text>
-              </TouchableOpacity>
-              :
-              (this.state.cartlineItem.ref8 == -1
+            <View style={styles.modalHeaderContainer}>
+              <Text style={styles.modalHeader}>Delivery</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              {this.state.cartlineItem.ref8 == 0
                 ?
-                null
-                :
                 <TouchableOpacity onPress={() => this.chooseCashcarry(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "N")}>
-                  <Text style={styles.modalItem}>Standard Delivery(${this.state.cartlineItem.ref8})</Text>
+                  <View style={styles.modalItemContainer}>
+                    <Text style={styles.modalItem}>Free Of Charge</Text>
+                  </View>
                 </TouchableOpacity>
-              )
-            }
-            <TouchableOpacity onPress={() => this.chooseCashcarry(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "Y")}>
-              <Text style={styles.modalItem}>Self-collect after 3 working days</Text>
-            </TouchableOpacity>
+                :
+                (this.state.cartlineItem.ref8 == -1
+                  ?
+                  null
+                  :
+                  <TouchableOpacity onPress={() => this.chooseCashcarry(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "N")}>
+                    <View style={styles.modalItemContainer}>
+                      <Text style={styles.modalItem}>Standard Delivery(${this.state.cartlineItem.ref8})</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }
+              <TouchableOpacity onPress={() => this.chooseCashcarry(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "Y")}>
+                <View style={styles.modalItemContainer}>
+                  <Text style={styles.modalItem}>Self-collect after 3 working days</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </Modal>
         <Modal
-          animationType='slide'
+          animationType='fade'
           visible={this.state.showInstallationModal}
           transparent={true}
           ref={"modal"}>
+          <TouchableOpacity onPress={() => this.setState({ showInstallationModal: false })} activeOpacity={1}>
+            <Image style={{ backgroundColor: 'black', height: height - 200, width: width, opacity: 0.3 }} />
+          </TouchableOpacity>
           <View style={styles.deliveryChoiceModal}>
+            <View style={styles.modalHeaderContainer}>
+              <Text style={styles.modalHeader}>Installation</Text>
+            </View>
+
             <TouchableOpacity onPress={() => this.chooseInstallation(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "Y")}>
-              <Text style={styles.modalItem}>{this.state.cartlineItem.cat6_name}</Text>
+              <View style={styles.modalItemContainer}>
+                <Text style={styles.modalItem}>{this.state.cartlineItem.cat6_name}</Text>
+              </View>
             </TouchableOpacity>
+
+
             <TouchableOpacity onPress={() => this.chooseInstallation(this.state.cartlineItem.recKey, this.state.cartlineItem.stkId, "N")}>
-              <Text style={styles.modalItem}>No Installation</Text>
+              <View style={styles.modalItemContainer}>
+                <Text style={styles.modalItem}>No Installation</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -531,19 +559,19 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     height: 64,
-    backgroundColor: 'white',
+    backgroundColor: '#EE113D',
     alignItems: 'center',
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderColor: '#D5D5D5'
   },
   title: {
-    color: 'black',
+    color: 'white',
     width: 100,
     fontSize: 30,
     paddingTop: 20,
     fontWeight: ('regular', '600'),
-    fontFamily: 'pledg',
+    fontFamily: 'ronaldo',
     textAlign: 'center',
   },
   cartlineItemContainer: {
@@ -662,13 +690,39 @@ const styles = StyleSheet.create({
   },
   deliveryChoiceModal: {
     width: width,
-    backgroundColor: 'white',
-    height: 300,
+    backgroundColor: '#F7F7f7',
+    height: 200,
     position: 'absolute',
     bottom: 0,
-    justifyContent: 'center',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderColor: '#D5D5D5',
+  },
+  modalItemContainer: {
+    marginTop: 30,
+    height: 30,
+    width: width * 2 / 3,
+    backgroundColor: '#E6E6E6',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalItem: {
+    height: 30,
+    fontSize: 18,
+    fontWeight: ('normal', '200'),
+    textAlign: 'center',
+    color: 'gray',
+    paddingTop: 3
+  },
+  modalHeaderContainer: {
+    width: width,
+    backgroundColor: '#E6E6E6',
+    alignItems: 'center'
+  },
+  modalHeader: {
+    marginTop: 5,
+    fontSize: 18,
+    fontWeight: ('bold', '600'),
+    color: 'gray',
+    paddingBottom: 5,
   }
 });

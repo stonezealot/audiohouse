@@ -317,16 +317,25 @@ export default class ProductScreen extends React.Component {
           </View>
         </View>
         <Modal
-          animationType='slide'
+          animationType='fade'
           visible={this.state.showInstallationModal}
-          transparent={true}
-        >
+          transparent={true}>
+          <TouchableOpacity onPress={() => this.setState({ showInstallationModal: false })} activeOpacity={1}>
+            <Image style={{ backgroundColor: 'black', height: height - 200, width: width, opacity: 0.3 }} />
+          </TouchableOpacity>
           <View style={styles.deliveryChoiceModal}>
+            <View style={styles.modalHeaderContainer}>
+              <Text style={styles.modalHeader}>Installation</Text>
+            </View>
             <TouchableOpacity onPress={this.installationFlgY}>
-              <Text style={styles.modalItem}>{this.state.selectedProduct.cat6_name}</Text>
+              <View style={styles.modalItemContainer}>
+                <Text style={styles.modalItem}>{this.state.selectedProduct.cat6_name}</Text>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.installationFlgN}>
-              <Text style={styles.modalItem}>No Installation</Text>
+              <View style={styles.modalItemContainer}>
+                <Text style={styles.modalItem}>No Installation</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </Modal>
@@ -334,26 +343,41 @@ export default class ProductScreen extends React.Component {
           animationType='fade'
           visible={this.state.showDeliveryModal}
           transparent={true}>
-          <View style={{ backgroundColor: 'black', flex: 1, opacity: 0.2 }}></View>
+          <TouchableOpacity onPress={() => this.setState({ showDeliveryModal: false })} activeOpacity={1}>
+            <Image style={{ backgroundColor: 'black', height: height - 200, width: width, opacity: 0.3 }} />
+          </TouchableOpacity>
           <View style={styles.deliveryChoiceModal}>
-            {this.state.selectedProduct.ref8 == 0
-              ?
-              <TouchableOpacity onPress={this.cashcarryN}>
-                <Text style={styles.modalItem}>Free Of Charge</Text>
-              </TouchableOpacity>
-              :
-              (this.state.selectedProduct.ref8 == -1
+            <View style={styles.modalHeaderContainer}>
+              <Text style={styles.modalHeader}>Delivery</Text>
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              {this.state.selectedProduct.ref8 == 0
                 ?
-                null
-                :
                 <TouchableOpacity onPress={this.cashcarryN}>
-                  <Text style={styles.modalItem}>Standard Delivery(${this.state.selectedProduct.ref8})</Text>
+                  <View style={styles.modalItemContainer}>
+                    <Text style={styles.modalItem}>Free Of Charge</Text>
+                  </View>
+
                 </TouchableOpacity>
-              )
-            }
-            <TouchableOpacity onPress={this.cashcarryY}>
-              <Text style={styles.modalItem}>Self-collect after 3 working days</Text>
-            </TouchableOpacity>
+                :
+                (this.state.selectedProduct.ref8 == -1
+                  ?
+                  null
+                  :
+                  <TouchableOpacity onPress={this.cashcarryN}>
+                    <View style={styles.modalItemContainer}>
+                      <Text style={styles.modalItem}>Standard Delivery(${this.state.selectedProduct.ref8})</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+              }
+              <TouchableOpacity onPress={this.cashcarryY}>
+                <View style={styles.modalItemContainer}>
+                  <Text style={styles.modalItem}>Self-collect after 3 working days</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </Modal>
       </View>
@@ -509,23 +533,39 @@ const styles = StyleSheet.create({
   },
   deliveryChoiceModal: {
     width: width,
-    backgroundColor: 'white',
-    height: 300,
+    backgroundColor: '#F7F7f7',
+    height: 200,
     position: 'absolute',
     bottom: 0,
-    justifyContent: 'center',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderColor: '#D5D5D5',
+  },
+  modalItemContainer: {
+    marginTop: 30,
+    height: 30,
+    width: width * 2 / 3,
+    backgroundColor: '#E6E6E6',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalItem: {
-    margin: 30,
     height: 30,
-    width: width * 3 / 5,
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: ('normal', '200'),
     textAlign: 'center',
-    borderWidth: 1,
-    borderColor: 'gray',
-    color: 'gray'
+    color: 'gray',
+    paddingTop: 3
+  },
+  modalHeaderContainer: {
+    width: width,
+    backgroundColor: '#E6E6E6',
+    alignItems: 'center'
+  },
+  modalHeader: {
+    marginTop: 5,
+    fontSize: 18,
+    fontWeight: ('bold', '600'),
+    color: 'gray',
+    paddingBottom: 5,
   }
 })
