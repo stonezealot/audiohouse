@@ -13,6 +13,7 @@ import {
     KeyboardAvoidingView,
     Button,
     RefreshControl,
+    Modal
 } from 'react-native';
 import URLSearchParams from 'url-search-params';
 import { SecureStore } from "../storage";
@@ -47,9 +48,9 @@ export default class LoginScreen extends React.Component {
     }
 
     handleLoginButton() {
-        // this.setState({
-        //     loading: true,
-        // });
+        this.setState({
+            loading: true,
+        });
         console.log('login button pressed');
         const name = this.state.name;
         const pwd = this.state.pwd;
@@ -132,7 +133,7 @@ export default class LoginScreen extends React.Component {
                 // })
             })
             .then(() => {
-                // this.setState({ toHome: true });
+                this.setState({ loading: false });
                 console.log('home:  ' + JSON.stringify(this.state.home));
                 console.log('serviceEntry:  ' + this.state.serviceEntry);
                 console.log('stocks:  ' + JSON.stringify(SecureStore.getItemAsync('stocks')));
@@ -169,23 +170,30 @@ export default class LoginScreen extends React.Component {
                 behavior='padding'
             >
                 <View style={styles.container}>
-                    <Text style={styles.title}>Audio House</Text>
-                    <TextInput
-                        style={styles.name}
-                        placeholder='Enter email or phone number'
-                        onChangeText={(name) => { this.setState({ name }) }}
-                        value={name}
-                        onSubmitEditing={() => { this.secondTextInput.focus(); }}
+                    {/* <Text style={styles.title}>Audio House</Text> */}
+                    <Image style={styles.image} source={require('../image/audio_house.jpg')}></Image>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.icon} source={require('../image/name.png')}></Image>
+                        <TextInput
+                            style={styles.name}
+                            placeholder='Enter email or phone number'
+                            onChangeText={(name) => { this.setState({ name }) }}
+                            value={name}
+                            onSubmitEditing={() => { this.secondTextInput.focus(); }}
 
-                    />
-                    <TextInput
-                        style={styles.pwd}
-                        ref={(input) => { this.secondTextInput = input; }}
-                        placeholder='Password'
-                        secureTextEntry={true}
-                        onChangeText={(pwd) => { this.setState({ pwd }) }}
-                        value={pwd}
-                    />
+                        />
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.icon} source={require('../image/password.png')}></Image>
+                        <TextInput
+                            style={styles.pwd}
+                            ref={(input) => { this.secondTextInput = input; }}
+                            placeholder='Password'
+                            secureTextEntry={true}
+                            onChangeText={(pwd) => { this.setState({ pwd }) }}
+                            value={pwd}
+                        />
+                    </View>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity style={styles.loginButton}
                             onPress={this.handleLoginButton.bind(this)}>
@@ -209,6 +217,14 @@ export default class LoginScreen extends React.Component {
                             <Image style={styles.facebook} source={require('../image/loginfacebook.png')} />
                         </TouchableOpacity>
                     </View>
+                    <Modal
+                        animationType='fade'
+                        visible={this.state.loading}
+                        transparent={true}>
+                        <View style={styles.loadingScreen}>
+                            <Image style={styles.loadingIcon} source={require('../image/loading.gif')} />
+                        </View>
+                    </Modal>
                 </View>
             </KeyboardAvoidingView>
         )
@@ -229,21 +245,32 @@ const styles = StyleSheet.create({
         // fontFamily:'univiapro',
         marginBottom: 80
     },
+    image: {
+        height: cal(180),
+        resizeMode: 'contain',
+        marginBottom: 100
+    },
+    icon: {
+        top: 3,
+        height: 33,
+        width: 33,
+        marginRight: 5
+    },
     name: {
-        width: width * 4 / 5,
+        width: width * 3 / 5,
         height: 40,
         backgroundColor: 'white',
         marginBottom: 30,
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: "#D5D5D5",
         borderRadius: 10,
         textAlign: 'center',
     },
     pwd: {
-        width: width * 4 / 5,
+        width: width * 3 / 5,
         height: 40,
         backgroundColor: 'white',
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: "#D5D5D5",
         borderRadius: 10,
         marginBottom: 30,
@@ -273,7 +300,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: ('bold', '600'),
         textAlign: 'center',
-        // fontFamily:'univiapro',
+        fontFamily: 'varela',
     },
     forgotText: {
         color: 'gray',
@@ -286,5 +313,18 @@ const styles = StyleSheet.create({
     facebook: {
         height: 30,
         width: 30
+    },
+    loadingScreen: {
+        backgroundColor: 'black',
+        flex: 1,
+        opacity: 0.3,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingIcon: {
+        height: 40,
+        width: 40,
+        backgroundColor: 'black',
+        opacity: 1
     }
 })

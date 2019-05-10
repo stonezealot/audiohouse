@@ -30,10 +30,14 @@ export default class SearchScreen extends React.Component {
         this.handlePriceRange = this.handlePriceRange.bind(this)
         this.handleCategorys = this.handleCategorys.bind(this)
         this.handleEccatId = this.handleEccatId.bind(this)
+        this.handlePriceAsc = this.handlePriceAsc.bind(this)
+        this.handlePriceDesc = this.handlePriceDesc.bind(this)
         this.resetState = this.resetState.bind(this)
         this.state = {
             searchText: this.props.navigation.getParam("searchText"),
             selectedShopMenus: this.props.navigation.getParam("selectedShopMenus"),
+            selectedShopMenusNetPriceAsc: '',
+            selectedShopMenusNetPriceDesc: '',
             serviceEntry: this.props.navigation.getParam("serviceEntry"),
             selectedShopMenusUpdate: '',
             selectedProduct: '',
@@ -41,17 +45,27 @@ export default class SearchScreen extends React.Component {
             minPrice: 0,
             maxPrice: 999999999,
             categorys: '',
-            eccatId: ''
+            eccatId: this.props.navigation.getParam("eccatId"),
         }
         navigation = this.props.navigation;
     }
 
     componentDidMount() {
-        this.setState({
-            selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
-                return menu.stkId.toUpperCase().includes(this.state.searchText) || menu.name.toUpperCase().includes(this.state.searchText);
+
+        if (this.state.searchText != '' && this.state.searchText.toString().trim().length != 0) {
+            this.setState({
+                selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
+                    return menu.stkId.toUpperCase().includes(this.state.searchText) || menu.name.toUpperCase().includes(this.state.searchText);
+                })
             })
-        })
+        } else {
+            this.setState({
+                selectedShopMenusUpdate: this.state.selectedShopMenus.filter(menu => {
+                    return menu.eccatId == this.state.eccatId
+                })
+            })
+        }
+
         this.getStorage()
     }
 
@@ -70,7 +84,6 @@ export default class SearchScreen extends React.Component {
             let url = serviceEntry + 'api/banners/'
             let params = new URLSearchParams();
             console.log('serviceEntry:  ' + serviceEntry);
-            console.log('orgId:  ' + home.custId)
             params.append('orgId', 'A01');
             url += ('?' + params);
             fetch(url, {
@@ -81,6 +94,38 @@ export default class SearchScreen extends React.Component {
                     this.setState({ categorys: response })
                 }, () => {
                     console.log(response.json())
+                })
+
+            //get stocks by netPrice asc
+            console.log('get stocks by netPrice asc')
+            url = serviceEntry + 'api/stocks-net-price-asc/'
+            params = new URLSearchParams();
+            console.log('serviceEntry:  ' + serviceEntry);
+            console.log('orgId:  ' + home.custId)
+            params.append('orgId', 'A01');
+            url += ('?' + params);
+            fetch(url, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    this.setState({ selectedShopMenusNetPriceAsc: response })
+                })
+
+            //get stocks by netPrice desc
+            console.log('get stocks by netPrice desc')
+            url = serviceEntry + 'api/stocks-net-price-desc/'
+            params = new URLSearchParams();
+            console.log('serviceEntry:  ' + serviceEntry);
+            console.log('orgId:  ' + home.custId)
+            params.append('orgId', 'A01');
+            url += ('?' + params);
+            fetch(url, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    this.setState({ selectedShopMenusNetPriceDesc: response })
                 })
         })
     }
@@ -180,6 +225,92 @@ export default class SearchScreen extends React.Component {
             })
         })
     }
+
+    handlePriceAsc() {
+        const { minPrice, maxPrice, searchText, eccatId } = this.state
+        let min = minPrice
+        let max = maxPrice
+
+        if (minPrice == '' || minPrice.toString().trim().length == 0) {
+            min = 0
+        }
+
+        if (maxPrice == '' || maxPrice.toString().trim().length == 0) {
+            max = 999999999
+        }
+
+        console.log('searchText:  ' + searchText)
+        console.log('minPrice:  ' + min)
+        console.log('maxPrice:  ' + max)
+        console.log('eccatId:  ' + eccatId)
+
+        if (eccatId == '' || eccatId.toString().trim().length == 0) {
+            this.setState({
+                isOpen: false,
+                selectedShopMenusUpdate: this.state.selectedShopMenusNetPriceAsc.filter(menu => {
+                    return (menu.stkId.toUpperCase().includes(searchText)
+                        || menu.name.toUpperCase().includes(searchText))
+                        && menu.netPrice >= min
+                        && menu.netPrice <= max
+                })
+            })
+        } else {
+            this.setState({
+                isOpen: false,
+                selectedShopMenusUpdate: this.state.selectedShopMenusNetPriceAsc.filter(menu => {
+                    return (menu.stkId.toUpperCase().includes(searchText)
+                        || menu.name.toUpperCase().includes(searchText))
+                        && menu.netPrice >= min
+                        && menu.netPrice <= max
+                        && menu.eccatId == eccatId
+                })
+            })
+        }
+    }
+
+    handlePriceDesc() {
+        const { minPrice, maxPrice, searchText, eccatId } = this.state
+        let min = minPrice
+        let max = maxPrice
+
+        if (minPrice == '' || minPrice.toString().trim().length == 0) {
+            min = 0
+        }
+
+        if (maxPrice == '' || maxPrice.toString().trim().length == 0) {
+            max = 999999999
+        }
+
+        console.log('searchText:  ' + searchText)
+        console.log('minPrice:  ' + min)
+        console.log('maxPrice:  ' + max)
+        console.log('eccatId:  ' + eccatId)
+
+        if (eccatId == '' || eccatId.toString().trim().length == 0) {
+            this.setState({
+                isOpen: false,
+                selectedShopMenusUpdate: this.state.selectedShopMenusNetPriceDesc.filter(menu => {
+                    return (menu.stkId.toUpperCase().includes(searchText)
+                        || menu.name.toUpperCase().includes(searchText))
+                        && menu.netPrice >= min
+                        && menu.netPrice <= max
+                })
+            })
+        } else {
+            this.setState({
+                isOpen: false,
+                selectedShopMenusUpdate: this.state.selectedShopMenusNetPriceDesc.filter(menu => {
+                    return (menu.stkId.toUpperCase().includes(searchText)
+                        || menu.name.toUpperCase().includes(searchText))
+                        && menu.netPrice >= min
+                        && menu.netPrice <= max
+                        && menu.eccatId == eccatId
+                })
+            })
+        }
+    }
+
+
 
     resetState() {
         const { minPrice, maxPrice, searchText, eccatId } = this.state
@@ -356,6 +487,19 @@ export default class SearchScreen extends React.Component {
                                     keyExtractor={this._extraUniqueKey}
                                 />
                             </View>
+                            <Text style={styles.priceRangeTitle}>Sort by</Text>
+                            <View style={styles.sideMenuItemContainerSort}>
+                                <TouchableOpacity onPress={this.handlePriceAsc}>
+                                    <View style={styles.categoryItemContainer}>
+                                        <Text style={styles.categoryItemName}>Lowest Price</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this.handlePriceDesc}>
+                                    <View style={styles.categoryItemContainer}>
+                                        <Text style={styles.categoryItemName}>Highest Price</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <TouchableOpacity onPress={this.resetState} activeOpacity={0.4}>
                             <View style={styles.resetBtnContainer} >
@@ -475,6 +619,13 @@ const styles = StyleSheet.create({
     },
     sideMenuItemContainer: {
         flexDirection: 'row',
+        marginLeft: 8,
+        marginTop: 18,
+        alignItems: 'center',
+        borderColor: '#E6E6E6',
+        borderBottomWidth: 0.4
+    },
+    sideMenuItemContainerSort: {
         marginLeft: 8,
         marginTop: 18,
         alignItems: 'center',

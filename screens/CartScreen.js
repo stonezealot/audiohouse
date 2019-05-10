@@ -644,10 +644,12 @@ const styles = StyleSheet.create({
   },
   totalText: {
     marginTop: 1,
+    marginLeft: 2,
     fontSize: 15,
     fontWeight: ('bold', '600'),
     borderBottomWidth: 0.5,
-    borderColor: 'gray'
+    borderColor: 'gray',
+    fontFamily: 'varela'
   },
   totalAmountText: {
     position: 'absolute',
@@ -660,9 +662,11 @@ const styles = StyleSheet.create({
   },
   gainText: {
     marginTop: 1,
+    marginLeft: 2,
     fontSize: 15,
     fontWeight: ('bold', '600'),
-    color: 'red'
+    color: 'red',
+    fontFamily: 'varela'
   },
   gainAmountText: {
     position: 'absolute',
@@ -686,7 +690,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     textAlign: 'center',
-    fontWeight: ('bold', '600')
+    fontWeight: ('bold', '600'),
+    fontFamily: 'varela'
   },
   deliveryChoiceModal: {
     width: width,

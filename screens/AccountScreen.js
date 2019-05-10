@@ -73,39 +73,51 @@ export default class AccountScreen extends React.Component {
 
     handleUpdateButton() {
         const { newPassword, oldPassword, serviceEntry, customer, log } = this.state
-        let url = serviceEntry + 'api/customer/' + customer.recKey + '/change-password';
-        const body = {
-            custId: customer.custId,
-            orgId: "A01",
-            oldPassword: oldPassword,
-            newPassword: newPassword,
+
+        if (oldPassword == '' || oldPassword.toString().trim().length == 0) {
+            console.log('Please enter your old password');
+            this.setState({ log: 'Please enter your old password' })
+        } else if (newPassword == '' || newPassword.toString().trim().length == 0) {
+            console.log('Please enter your new password');
+            this.setState({ log: 'Please enter your new password' })
+        } else {
+            let url = serviceEntry + 'api/customer/' + customer.recKey + '/change-password';
+            const body = {
+                custId: customer.custId,
+                orgId: "A01",
+                oldPassword: oldPassword,
+                newPassword: newPassword,
+            }
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                body: JSON.stringify(body),
+            })
+                .then(response => {
+                    console.log('response', response);
+                    if (!response.ok) {
+                        console.log('response not ok');
+                        // throw response;
+                    } else {
+                        console.log('response ok');
+                        this.setState({ log: '' })
+                        return response.json();
+                    }
+                })
+                .catch(error => {
+                    if (error) {
+                        // prompt
+                        console.log('no success', error);
+                    }
+                    this.setState({
+                        log: 'Update failed',
+                    });
+                })
+
         }
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            body: JSON.stringify(body),
-        })
-            .then(response => {
-                console.log('response', response);
-                if (!response.ok) {
-                    console.log('response not ok');
-                    // throw response;
-                } else {
-                    console.log('response ok');
-                    return response.json();
-                }
-            })
-            .catch(error => {
-                if (error) {
-                    // prompt
-                    console.log('no success', error);
-                }
-                this.setState({
-                    log: 'Update failed',
-                });
-            })
+
 
     }
 
@@ -170,20 +182,19 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         height: 64,
-        backgroundColor: 'white',
+        backgroundColor: '#EE113D',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
         borderColor: '#D5D5D5'
     },
     title: {
-        color: 'black',
+        color: 'white',
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),
         fontFamily: 'ronaldo',
         textAlign: 'center',
-        width: 200
     },
     subtitleContainer: {
         marginTop: 20,

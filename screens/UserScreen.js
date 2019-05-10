@@ -13,6 +13,7 @@ import {
     KeyboardAvoidingView,
     Button,
     RefreshControl,
+    Modal
 } from 'react-native';
 import URLSearchParams from 'url-search-params';
 import { SecureStore } from "../storage";
@@ -37,7 +38,8 @@ export default class UserScreen extends React.Component {
             postalcode: '',
             unitNo: '',
             address: '',
-            log: ''
+            log: '',
+            showRemind: false
         };
         navigation = this.props.navigation;
         this.getStorage = this.getStorage.bind(this);
@@ -122,6 +124,14 @@ export default class UserScreen extends React.Component {
                         // throw response;
                     } else {
                         console.log('response ok');
+                        this.setState({
+                            showRemind: true
+                        });
+                        setTimeout(() => {
+                            this.setState({
+                                showRemind: false
+                            })
+                        }, 1000);
                         return response.json();
                     }
                 })
@@ -221,7 +231,14 @@ export default class UserScreen extends React.Component {
                         <Text style={styles.logText}>{log || null}</Text>
                     </View>
                 </ScrollView>
-
+                <Modal
+                    animationType='fade'
+                    visible={this.state.showRemind}
+                    transparent={true}>
+                    <View style={styles.loadingScreen}>
+                        <Image style={styles.loadingIcon} source={require('../image/loading.gif')} />
+                    </View>
+                </Modal>
             </KeyboardAvoidingView>
         )
     }
@@ -237,20 +254,20 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         height: 64,
-        backgroundColor: 'white',
+        backgroundColor: '#EE113D',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
         borderColor: '#D5D5D5'
     },
     title: {
-        color: 'black',
+        color: 'white',
+        width: 100,
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),
         fontFamily: 'ronaldo',
         textAlign: 'center',
-        width: 400
     },
     subtitleContainer: {
         marginTop: 20,
@@ -325,6 +342,19 @@ const styles = StyleSheet.create({
     logText: {
         fontSize: 15,
         color: 'red'
+    },
+    loadingScreen: {
+        backgroundColor: 'black',
+        flex: 1,
+        opacity: 0.3,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingIcon: {
+        height: 40,
+        width: 40,
+        backgroundColor: 'black',
+        opacity: 1
     }
 
 })

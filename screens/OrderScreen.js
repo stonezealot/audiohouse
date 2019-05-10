@@ -159,15 +159,14 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         height: 64,
-        backgroundColor: 'white',
+        backgroundColor: '#EE113D',
         alignItems: 'center',
         justifyContent: 'center',
         borderBottomWidth: 1,
         borderColor: '#D5D5D5'
     },
     title: {
-        color: 'black',
-        width: 200,
+        color: 'white',
         fontSize: 30,
         paddingTop: 20,
         fontWeight: ('regular', '600'),

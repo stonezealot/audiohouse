@@ -48,6 +48,7 @@ export default class App extends React.Component {
         'univiapro': require('./assets/fonts/univiapro-bold.otf'),
         'strasua': require('./assets/fonts/Strasua.ttf'),
         'ronaldo': require('./assets/fonts/Ronaldo.ttf'),
+        'varela': require('./assets/fonts/VarelaRound-Regular.ttf')
       }),
     ]);
   };
